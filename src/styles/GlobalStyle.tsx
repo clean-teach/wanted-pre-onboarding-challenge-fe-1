@@ -62,12 +62,59 @@ body {
 a {
   text-decoration:none;
   color:inherit;
+  cursor: pointer;
+  &:disabled {
+    cursor: default;
+  }
+}
+button {
+  cursor: pointer;
+  &:disabled {
+    cursor: default;
+  }
 }
 `;
 
-export const AuthForm = styled.form`
+export const AuthArea = styled.div`
+  min-width: 100%;
+  min-height: 100vh;
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
-  input {
+  h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+  form {
+    width: 560px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    input {
+      width: 100%;
+      font-size: 1rem;
+      padding: 1rem;
+      &.warning {
+        border-color: #ffaaaa;
+        background-color: #ffcccc;
+        &:focus {
+          border-color: #333333;
+          background-color: #ffffff;
+        }
+      }
+      &.success {
+        border-color: #aaffaa;
+        background-color: #ccffcc;
+      }
+    }
+    p {
+      color: red;
+    }
+    button {
+      font-size: 1rem;
+      padding: 1rem;
+    }
   }
 `;
