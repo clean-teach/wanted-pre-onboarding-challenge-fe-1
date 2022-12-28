@@ -5,9 +5,15 @@
 좋은 경험을 통하여 많이 배우고 싶습니다.
 잘 부탁 드립니다!
 
+## API Test 참고 및 사전과제 가이드
+
+https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api
+
 ## Demo 실행 방법
 
-yarn start
+1. Git hub Repository Code Download
+2. npm install
+3. yarn start
 
 ## git hub page 배포 링크
 
