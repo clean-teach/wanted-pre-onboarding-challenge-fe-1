@@ -12,8 +12,8 @@ https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api
 ## Demo 실행 방법
 
 1. Git hub Repository Code Download
-2. npm install
-3. yarn start
+2. `npm install`
+3. `yarn start`
 
 ## git hub page 배포 링크
 
