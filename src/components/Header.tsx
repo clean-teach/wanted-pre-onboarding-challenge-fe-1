@@ -43,7 +43,7 @@ function Header() {
 
   return (
     <Wrapper>
-      <Title>원티드 프리온보딩 챌린지 프론트엔드 코스 사전과제</Title>
+      <Title>원티드 프리온보딩 챌린지 프론트엔드 코스 사전과제 : 김청훈</Title>
       <nav>
         {isLoggedIn ? (
           <Btn as="button" onClick={onLogOut}>

@@ -17,24 +17,30 @@ export const errorState = atom<IErrorState>({
   },
 });
 
+export enum TodoCurrent {
+  'TO_DO' = 'TO_DO',
+  'DOING' = 'DOING',
+  'DONE' = 'DONE',
+}
+
 export interface ITodo {
   title: string;
   content: string;
-  id: number;
-  current?: 'toDo' | 'doing' | 'done';
-  createdAt: number;
-  updatedAt: number;
+  id: string;
+  current: TodoCurrent;
+  createdAt: string;
+  updatedAt: string;
 }
 export const TodosState = atom<ITodo[]>({
   key: 'todos',
   default: [
-    {
-      title: '제목',
-      content: '내용',
-      id: Date.now(),
-      current: 'toDo',
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    },
+    // {
+    //   title: '제목',
+    //   content: '내용',
+    //   id: String(Date.now()),
+    //   current: TodoCurrent.TO_DO,
+    //   createdAt: String(Date.now()),
+    //   updatedAt: String(Date.now()),
+    // },
   ],
 });

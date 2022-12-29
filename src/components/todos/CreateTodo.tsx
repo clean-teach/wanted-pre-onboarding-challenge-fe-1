@@ -2,20 +2,11 @@ import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 import { LOCALSTORAGE_LOGINTOKEN } from '../../utils/strings';
 import styled from 'styled-components';
-import { errorState, ITodo, TodosState } from '../../atoms';
+import { errorState, ITodo, TodoCurrent, TodosState } from '../../atoms';
 import { fetchCreateTodo } from '../../api';
 
 const Wrapper = styled.div`
   width: 100%;
-  padding: 2rem 0;
-  border-bottom: 1px solid #333333;
-  border-top: 1px solid #333333;
-  h3 {
-    text-align: center;
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 2rem;
-  }
   form {
     display: flex;
     flex-direction: column;
@@ -32,12 +23,16 @@ const Wrapper = styled.div`
   }
 `;
 
+interface IProps {
+  token: string;
+}
+
 interface IForm {
   newTodoTitle: string;
   newTodoContent: string;
 }
 
-function CreateTodo() {
+function CreateTodo({ token }: IProps) {
   const [todos, setTodos] = useRecoilState(TodosState);
   const [fetchError, setFetchError] = useRecoilState(errorState);
   const {
@@ -53,41 +48,38 @@ function CreateTodo() {
   const successNewTodo = successNewTodoTitle && successNewTodoContent;
 
   const onValid = (data: IForm) => {
-    const token = window.localStorage.getItem(LOCALSTORAGE_LOGINTOKEN);
-    if (token) {
-      const response = fetchCreateTodo({
-        title: data.newTodoTitle,
-        content: data.newTodoContent,
-        token: token,
-      });
-      response
-        .then((response) => {
-          const { title, content, id, createdAt, updatedAt }: ITodo =
-            response.data;
-          const newTodo: ITodo = {
-            title,
-            content,
-            id,
-            current: 'toDo',
-            createdAt,
-            updatedAt,
-          };
-          setTodos(todos.concat(newTodo));
-          setFetchError({
-            status: null,
-            message: '',
-          });
-          setValue('newTodoTitle', '');
-          setValue('newTodoContent', '');
-        })
-        .catch((error) => {
-          console.log(error);
-          setFetchError({
-            status: error.response.status,
-            message: error.response.data.details,
-          });
+    const response = fetchCreateTodo({
+      title: data.newTodoTitle,
+      content: data.newTodoContent,
+      token: token,
+    });
+    response
+      .then((response) => {
+        const { title, content, id, createdAt, updatedAt }: ITodo =
+          response.data.data;
+        const newTodo: ITodo = {
+          title,
+          content,
+          id,
+          current: TodoCurrent.TO_DO,
+          createdAt,
+          updatedAt,
+        };
+        setTodos([newTodo, ...todos]);
+        setFetchError({
+          status: null,
+          message: '',
         });
-    }
+        setValue('newTodoTitle', '');
+        setValue('newTodoContent', '');
+      })
+      .catch((error) => {
+        console.log(error);
+        setFetchError({
+          status: error.response.status,
+          message: error.response.data.details,
+        });
+      });
   };
 
   return (

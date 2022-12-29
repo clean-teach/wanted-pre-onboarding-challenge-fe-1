@@ -28,6 +28,10 @@ interface IPropsPostTodo {
 interface IPropsGetTodo {
   token: string;
 }
+interface IPropsDeleteTodo {
+  todoId: string;
+  token: string;
+}
 export const fetchCreateTodo = async ({
   title,
   content,
@@ -45,6 +49,13 @@ export const fetchCreateTodo = async ({
 };
 export const fetchGetTodos = async ({ token }: IPropsGetTodo) => {
   return await axios.get(`${BASE_URL}/todos`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+export const fetchDeleteTodos = async ({ todoId, token }: IPropsDeleteTodo) => {
+  return await axios.delete(`${BASE_URL}/todos/${todoId}`, {
     headers: {
       Authorization: token,
     },
