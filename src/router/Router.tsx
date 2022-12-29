@@ -12,7 +12,7 @@ const router = createBrowserRouter(
       element: <App />,
       children: [
         {
-          path: '/auth',
+          path: 'auth',
           children: [
             {
               path: 'login',
@@ -29,8 +29,8 @@ const router = createBrowserRouter(
           element: <TodoList />,
           children: [
             {
-              path: ':todoId/*"',
-              element: <TodoView />,
+              path: ':todoId/*',
+              element: <TodoList />,
             },
           ],
         },

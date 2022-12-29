@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
-import { LOCALSTORAGE_LOGINTOKEN } from '../../utils/strings';
 import styled from 'styled-components';
 import { errorState, ITodo, TodoCurrent, TodosState } from '../../atoms';
 import { fetchCreateTodo } from '../../api';

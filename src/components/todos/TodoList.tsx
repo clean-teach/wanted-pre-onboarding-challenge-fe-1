@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -33,12 +33,13 @@ const Title = styled.h2`
 const TodoArea = styled.div`
   width: 1024px;
   display: grid;
-  grid-template-columns: 360px 1fr;
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 20rem 1fr;
   gap: 2rem;
   & > * {
-    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
     padding: 1rem;
+    border-radius: 0.5rem;
   }
   & > *:nth-child(1) {
     grid-column: 1/2;
@@ -54,9 +55,11 @@ const TodoArea = styled.div`
   }
 `;
 const ListArea = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 
 function TodoList() {
@@ -88,9 +91,8 @@ function TodoList() {
       <TodoArea>
         <CreateTodo token={token} />
         <TodoView />
-        <Outlet />
         <ListArea>
-          <h3>할 일 목록 자세히 보기</h3>
+          <h3>할 일 목록</h3>
           <ul>
             {todos.map((todo) => {
               return (
