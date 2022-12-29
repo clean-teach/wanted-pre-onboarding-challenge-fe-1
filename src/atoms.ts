@@ -16,3 +16,25 @@ export const errorState = atom<IErrorState>({
     message: '',
   },
 });
+
+export interface ITodo {
+  title: string;
+  content: string;
+  id: number;
+  current?: 'toDo' | 'doing' | 'done';
+  createdAt: number;
+  updatedAt: number;
+}
+export const TodosState = atom<ITodo[]>({
+  key: 'todos',
+  default: [
+    {
+      title: '제목',
+      content: '내용',
+      id: Date.now(),
+      current: 'toDo',
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    },
+  ],
+});

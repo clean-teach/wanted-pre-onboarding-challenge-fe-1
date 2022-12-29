@@ -19,3 +19,34 @@ export const fetchLogIn = async ({ email, password }: IProps) => {
     password,
   });
 };
+
+interface IPropsPostTodo {
+  title: string;
+  content: string;
+  token: string;
+}
+interface IPropsGetTodo {
+  token: string;
+}
+export const fetchCreateTodo = async ({
+  title,
+  content,
+  token,
+}: IPropsPostTodo) => {
+  return await axios.post(
+    `${BASE_URL}/todos`,
+    { title, content },
+    {
+      headers: {
+        Authorization: token,
+      },
+    },
+  );
+};
+export const fetchGetTodos = async ({ token }: IPropsGetTodo) => {
+  return await axios.get(`${BASE_URL}/todos`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+};

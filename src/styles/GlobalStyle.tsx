@@ -55,9 +55,10 @@ table {
 body {
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
-  background-color: #ffffff;
-  color:black;
+  background-color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.txtColor};
   line-height: 1.2;
+  padding-top: 4rem;
 }
 a {
   text-decoration:none;
@@ -72,6 +73,26 @@ button {
   &:disabled {
     cursor: default;
   }
+}
+input[type='text'], input[type='password'], input[type='email']{
+  width: 100%;
+  font-size: 1rem;
+  padding: 1rem;
+  &.warning {
+    border-color: ${(props) => props.theme.negativeAssistanceColor};
+    background-color: ${(props) => props.theme.negativeDominantColor};
+    &:focus {
+      border-color: #333333;
+      background-color: #ffffff;
+    }
+  }
+  &.success {
+    border-color: ${(props) => props.theme.assistanceColor};
+    background-color: ${(props) => props.theme.dominantColor};
+  }
+}
+p.warning {
+  color: ${(props) => props.theme.negativePointColor};
 }
 `;
 
@@ -92,26 +113,6 @@ export const AuthArea = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
-    input {
-      width: 100%;
-      font-size: 1rem;
-      padding: 1rem;
-      &.warning {
-        border-color: #ffaaaa;
-        background-color: #ffcccc;
-        &:focus {
-          border-color: #333333;
-          background-color: #ffffff;
-        }
-      }
-      &.success {
-        border-color: #aaffaa;
-        background-color: #ccffcc;
-      }
-    }
-    p {
-      color: red;
-    }
     button {
       font-size: 1rem;
       padding: 1rem;

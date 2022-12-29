@@ -16,12 +16,17 @@ interface IForm {
 function Login() {
   const [fetchError, setFetchError] = useRecoilState(errorState);
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
+
   const {
     register,
     watch,
     handleSubmit,
     formState: { errors },
   } = useForm<IForm>();
+
+  const successEmail = regExpEmail.test(watch().email);
+  const successPassword = watch().password?.length >= 8;
+  const successInput = successEmail && successPassword;
 
   const onValid = (data: IForm) => {
     const response = fetchLogIn({
@@ -49,10 +54,6 @@ function Login() {
       });
   };
 
-  const successEmail = regExpEmail.test(watch().email);
-  const successPassword = watch().password?.length >= 8;
-  const successInput = successEmail && successPassword;
-
   return (
     <AuthArea>
       <h2>로그인</h2>
@@ -72,7 +73,9 @@ function Login() {
               : ''
           }
         />
-        {errors.email?.type === 'pattern' && <p>{errors.email.message}</p>}
+        {errors.email?.type === 'pattern' && (
+          <p className="warning">{errors.email.message}</p>
+        )}
         <input
           {...register('password', {
             required: '비밀번호는 최소 8자 이상을 입력하여야 합니다.',
@@ -88,10 +91,12 @@ function Login() {
               : ''
           }
         />
-        {errors.password?.type === 'minLength' && <p></p>}
+        {errors.password?.type === 'minLength' && (
+          <p className="warning">{errors.password?.message}</p>
+        )}
         <button disabled={successInput ? false : true}>제출</button>
         {fetchError.status !== null ? (
-          <p>
+          <p className="warning">
             {fetchError.status} : {fetchError.message}
           </p>
         ) : null}

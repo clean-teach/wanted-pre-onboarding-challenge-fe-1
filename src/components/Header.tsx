@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { LOCALSTORAGE_LOGINTOKEN } from '../utils/strings';
 import { useRecoilState } from 'recoil';
-import { isLoggedInState } from '../atoms';
+import { errorState, isLoggedInState } from '../atoms';
 
 const Wrapper = styled.header`
   width: 100%;
@@ -11,7 +11,9 @@ const Wrapper = styled.header`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   nav {
     position: absolute;
     right: 2rem;
@@ -26,12 +28,17 @@ const Title = styled.h1`
 const Btn = styled.div``;
 
 function Header() {
+  const [fetchError, setFetchError] = useRecoilState(errorState);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
   const navigate = useNavigate();
   const onLogOut = () => {
     window.localStorage.removeItem(LOCALSTORAGE_LOGINTOKEN);
     setIsLoggedIn(false);
     navigate('/auth/login');
+    setFetchError({
+      status: null,
+      message: '',
+    });
   };
 
   return (

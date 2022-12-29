@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import router from './router/Router';
 import { GlobalStyle } from './styles/GlobalStyle';
 import { RecoilRoot } from 'recoil';
+import { ThemeProvider } from 'styled-components';
+import { whiteTheme } from './styles/theme';
 
 const queryClient = new QueryClient();
 
@@ -15,8 +17,10 @@ root.render(
   // <React.StrictMode>
   <RecoilRoot>
     <QueryClientProvider client={queryClient}>
-      <GlobalStyle />
-      <RouterProvider router={router} />
+      <ThemeProvider theme={whiteTheme}>
+        <GlobalStyle />
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </QueryClientProvider>
   </RecoilRoot>,
   // </React.StrictMode>
