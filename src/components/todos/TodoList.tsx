@@ -90,7 +90,7 @@ function TodoList() {
       <Title>To do List</Title>
       <TodoArea>
         <CreateTodo token={token} />
-        <TodoView />
+        <TodoView token={token} />
         <ListArea>
           <h3>할 일 목록</h3>
           <ul>

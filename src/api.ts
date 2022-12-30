@@ -20,15 +20,15 @@ export const fetchLogIn = async ({ email, password }: IProps) => {
   });
 };
 
-interface IPropsPostTodo {
+interface IPropsPostTodos {
   title: string;
   content: string;
   token: string;
 }
-interface IPropsGetTodo {
+interface IPropsGetTodos {
   token: string;
 }
-interface IPropsDeleteTodo {
+interface IPropsTodo {
   todoId: string;
   token: string;
 }
@@ -36,7 +36,7 @@ export const fetchCreateTodo = async ({
   title,
   content,
   token,
-}: IPropsPostTodo) => {
+}: IPropsPostTodos) => {
   return await axios.post(
     `${BASE_URL}/todos`,
     { title, content },
@@ -47,15 +47,22 @@ export const fetchCreateTodo = async ({
     },
   );
 };
-export const fetchGetTodos = async ({ token }: IPropsGetTodo) => {
+export const fetchGetTodos = async ({ token }: IPropsGetTodos) => {
   return await axios.get(`${BASE_URL}/todos`, {
     headers: {
       Authorization: token,
     },
   });
 };
-export const fetchDeleteTodos = async ({ todoId, token }: IPropsDeleteTodo) => {
+export const fetchDeleteTodos = async ({ todoId, token }: IPropsTodo) => {
   return await axios.delete(`${BASE_URL}/todos/${todoId}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+export const fetchGetTodoById = async ({ todoId, token }: IPropsTodo) => {
+  return await axios.get(`${BASE_URL}/todos/${todoId}`, {
     headers: {
       Authorization: token,
     },

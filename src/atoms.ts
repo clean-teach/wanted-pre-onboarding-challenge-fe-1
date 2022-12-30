@@ -33,14 +33,5 @@ export interface ITodo {
 }
 export const TodosState = atom<ITodo[]>({
   key: 'todos',
-  default: [
-    // {
-    //   title: '제목',
-    //   content: '내용',
-    //   id: String(Date.now()),
-    //   current: TodoCurrent.TO_DO,
-    //   createdAt: String(Date.now()),
-    //   updatedAt: String(Date.now()),
-    // },
-  ],
+  default: [],
 });
