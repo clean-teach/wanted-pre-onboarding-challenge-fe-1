@@ -10,9 +10,17 @@ interface IProps {
 function TodoView({ token }: IProps) {
   const params = useParams();
   const [todo, setTodo] = useState<ITodo>();
-  const getDate = (date: Date) => {
-    const year = date.getFullYear();
-    return `${year}년 월 일 시 분 초`;
+  const getDate = (date: string | undefined) => {
+    if (date) {
+      const dateType = new Date(date);
+      const year = dateType.getFullYear();
+      const month = dateType.getMonth() + 1;
+      const day = dateType.getDate();
+      const hour = dateType.getHours();
+      const minute = dateType.getMinutes();
+      const second = dateType.getSeconds();
+      return `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분 ${second}초`;
+    }
   };
 
   useEffect(() => {
@@ -35,10 +43,11 @@ function TodoView({ token }: IProps) {
         <dt>내용</dt>
         <dd>{todo?.content}</dd>
         <dt>생성 날짜</dt>
-        <dd>{todo?.createdAt}</dd>
+        <dd>{getDate(todo?.createdAt)}</dd>
         <dt>수정 날짜</dt>
-        <dd>{todo?.updatedAt}</dd>
+        <dd>{getDate(todo?.updatedAt)}</dd>
       </dl>
+      <button>수정</button>
     </div>
   );
 }
