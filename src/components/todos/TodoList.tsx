@@ -70,15 +70,14 @@ function TodoList() {
   useEffect(() => {
     if (token) {
       const response = fetchGetTodos({ token });
-      response.then((response) => {
-        const responseTodos = response.data.data;
-        setTodos(responseTodos);
-      });
+      response
+        .then((response) => {
+          const responseTodos = response.data.data;
+          setTodos(responseTodos);
+        })
+        .catch((error) => console.log(error));
     }
-  }, []);
-  // useEffect(() => {
-  //   console.log('todos : ', todos);
-  // }, [todos]);
+  }, [todos]);
 
   if (!token) {
     navigate('/auth/login');

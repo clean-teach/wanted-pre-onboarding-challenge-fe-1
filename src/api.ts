@@ -32,6 +32,12 @@ interface IPropsTodo {
   todoId: string;
   token: string;
 }
+interface IPropsUpdateTodo {
+  todoId: string;
+  token: string;
+  title: string;
+  content: string;
+}
 export const fetchCreateTodo = async ({
   title,
   content,
@@ -67,4 +73,20 @@ export const fetchGetTodoById = async ({ todoId, token }: IPropsTodo) => {
       Authorization: token,
     },
   });
+};
+export const fetchUpdateTodo = async ({
+  todoId,
+  token,
+  title,
+  content,
+}: IPropsUpdateTodo) => {
+  return await axios.put(
+    `${BASE_URL}/todos/${todoId}`,
+    { title, content },
+    {
+      headers: {
+        Authorization: token,
+      },
+    },
+  );
 };
