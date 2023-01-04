@@ -36,25 +36,30 @@ const TodoArea = styled.div`
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 20rem 1fr;
   gap: 2rem;
-  & > * {
-    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
-    padding: 1rem;
-    border-radius: 0.5rem;
-  }
-  & > *:nth-child(1) {
-    grid-column: 1/2;
-    grid-row: 1/2;
-  }
   & > *:nth-child(2) {
-    grid-column: 1/2;
-    grid-row: 2/3;
-  }
-  & > *:nth-child(3) {
     grid-column: 2/3;
     grid-row: 1/3;
   }
 `;
-const ListArea = styled.div`
+const Box = styled.div`
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 0.5rem;
+`;
+const InfoArea = styled.div`
+  position: fixed;
+  width: calc(1024px / 2);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 20rem 1fr;
+  gap: 2rem;
+  & > div {
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+`;
+const ListArea = styled(Box)`
   ul {
     display: flex;
     flex-direction: column;
@@ -88,8 +93,10 @@ function TodoList() {
     <Wrapper>
       <Title>To do List</Title>
       <TodoArea>
-        <CreateTodo token={token} />
-        <TodoView token={token} />
+        <InfoArea>
+          <CreateTodo token={token} />
+          <TodoView token={token} />
+        </InfoArea>
         <ListArea>
           <h3>할 일 목록</h3>
           <ul>
