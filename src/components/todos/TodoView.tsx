@@ -1,8 +1,33 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { fetchGetTodoById, fetchUpdateTodo } from '../../api';
 import { ITodo } from '../../atoms';
+
+const Wrapper = styled.div`
+  position: fixed;
+  width: calc(1024px / 2);
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  .guide {
+    font-size: 1rem;
+  }
+  dt {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 1rem 0 0.5rem;
+  }
+  button {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 1rem;
+  }
+  input {
+    width: 100%;
+  }
+`;
 
 interface IProps {
   token: string;
@@ -53,7 +78,9 @@ function TodoView({ token }: IProps) {
           setTodo(response.data.data);
           setIsEdit((current) => !current);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
@@ -70,10 +97,12 @@ function TodoView({ token }: IProps) {
   }, [params]);
 
   return (
-    <div>
+    <Wrapper>
       <h3>할 일 목록 자세히 보기</h3>
       {todo === undefined ? (
-        <p>현재 선택 된 To do 가 없습니다. To do 를 클릭해 주세요.</p>
+        <p className="guide">
+          현재 선택 된 To do 가 없습니다. To do 를 클릭해 주세요.
+        </p>
       ) : isEdit ? (
         <form onSubmit={handleSubmit(onEdit)}>
           <dl>
@@ -123,7 +152,7 @@ function TodoView({ token }: IProps) {
           <button onClick={onEditModeChange}>수정</button>
         </>
       )}
-    </div>
+    </Wrapper>
   );
 }
 
