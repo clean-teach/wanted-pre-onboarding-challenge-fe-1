@@ -13,5 +13,6 @@ declare module 'styled-components' {
     bgColor: string;
     txtColor: string;
     borderColor: string;
+    grayColor: string;
   }
 }

@@ -62,7 +62,7 @@ body {
 }
 a {
   text-decoration:none;
-  color:inherit;
+  color:${(props) => props.theme.pointColor};
   cursor: pointer;
   &:disabled {
     cursor: default;
@@ -70,14 +70,22 @@ a {
 }
 button {
   cursor: pointer;
+  border: none;
+  background: ${(props) => props.theme.pointColor};
+  color: ${(props) => props.theme.bgColor};
+  border-radius:0.25rem ;
   &:disabled {
     cursor: default;
+    background: ${(props) => props.theme.grayColor};
+    color: ${(props) => props.theme.bgColor};
   }
 }
 input[type='text'], input[type='password'], input[type='email']{
   width: 100%;
   font-size: 1rem;
   padding: 1rem;
+  border-radius: .25rem;
+  border: 1px solid ${(props) => props.theme.grayColor};
   &.warning {
     border-color: ${(props) => props.theme.negativeAssistanceColor};
     background-color: ${(props) => props.theme.negativeDominantColor};

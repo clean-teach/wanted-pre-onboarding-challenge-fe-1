@@ -10,4 +10,5 @@ export const whiteTheme: DefaultTheme = {
   bgColor: '#ffffff',
   txtColor: '#1e272e',
   borderColor: '#4bcffa',
+  grayColor: '#acacac',
 };

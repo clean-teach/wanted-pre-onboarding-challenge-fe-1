@@ -1,5 +1,6 @@
+// import { useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LOCALSTORAGE_LOGINTOKEN } from '../utils/strings';
 import { useRecoilState } from 'recoil';
 import { errorState, isLoggedInState } from '../atoms';
@@ -25,9 +26,12 @@ const Title = styled.h1`
   font-weight: bold;
 `;
 
-const Btn = styled.div``;
+const Btn = styled.div`
+  padding: 0.5rem;
+`;
 
 function Header() {
+  const currentLocation = useLocation();
   const [fetchError, setFetchError] = useRecoilState(errorState);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
   const navigate = useNavigate();
@@ -41,6 +45,10 @@ function Header() {
     });
   };
 
+  // useEffect(() => {
+  //   console.log(currentLocation);
+  // }, [currentLocation]);
+
   return (
     <Wrapper>
       <Title>원티드 프리온보딩 챌린지 프론트엔드 코스 사전과제 : 김청훈</Title>
@@ -51,7 +59,9 @@ function Header() {
           </Btn>
         ) : (
           <Btn>
-            <Link to="/auth/login">로그인</Link>
+            {currentLocation.pathname !== '/auth/login' && (
+              <Link to="/auth/login">로그인</Link>
+            )}
           </Btn>
         )}
       </nav>

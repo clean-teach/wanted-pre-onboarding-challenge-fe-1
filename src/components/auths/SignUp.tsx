@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { AuthArea } from '../../styles/GlobalStyle';
 import { useForm } from 'react-hook-form';
 import { regExpEmail } from '../../utils/regexp';
@@ -5,6 +6,7 @@ import { fetchSignUp } from '../../api';
 import { useRecoilState } from 'recoil';
 import { errorState } from '../../atoms';
 import { useNavigate } from 'react-router-dom';
+import { setClassNameByValid } from '../../utils/function';
 
 interface IForm {
   email: string;
@@ -13,6 +15,7 @@ interface IForm {
 }
 
 function SignUp() {
+  const [isDefault, setIsDefault] = useState(true);
   const [fetchError, setFetchError] = useRecoilState(errorState);
   const navigate = useNavigate();
 
@@ -30,6 +33,7 @@ function SignUp() {
   const successInput = successEmail && successPassword && successPassword2;
 
   const onValid = (data: IForm) => {
+    setIsDefault(false);
     const response = fetchSignUp({
       email: data.email,
       password: data.password,
@@ -52,7 +56,6 @@ function SignUp() {
           message: error.response.data.details,
         });
       });
-    console.log(response);
   };
 
   return (
@@ -66,13 +69,12 @@ function SignUp() {
           })}
           type="email"
           placeholder="이메일을 입력해주세요"
-          className={
-            successEmail
-              ? 'success'
-              : watch().email?.length !== 0
-              ? 'warning'
-              : ''
-          }
+          className={setClassNameByValid({
+            isDefault,
+            successCondition: successEmail,
+            warningCondition:
+              watch().email?.length !== 0 || fetchError.status !== null,
+          })}
         />
         {errors.email?.type === 'pattern' && (
           <p className="warning">{errors.email.message}</p>
@@ -84,13 +86,12 @@ function SignUp() {
           })}
           type="password"
           placeholder="비밀번호는 8자 이상을 입력해주세요"
-          className={
-            successPassword
-              ? 'success'
-              : watch().password?.length !== 0
-              ? 'warning'
-              : ''
-          }
+          className={setClassNameByValid({
+            isDefault,
+            successCondition: successPassword,
+            warningCondition:
+              watch().password?.length !== 0 || fetchError.status !== null,
+          })}
         />
         {errors.password?.type === 'minLength' && (
           <p className="warning">{errors.password?.message}</p>
@@ -103,18 +104,28 @@ function SignUp() {
           })}
           type="password"
           placeholder="비밀번호 확인"
-          className={
-            successPassword2
-              ? 'success'
-              : watch().password2?.length !== 0
-              ? 'warning'
-              : ''
-          }
+          className={setClassNameByValid({
+            isDefault,
+            successCondition: successPassword2,
+            warningCondition:
+              watch().password2?.length !== 0 || fetchError.status !== null,
+          })}
         />
         {errors.password2?.type === 'minLength' && (
           <p className="warning">{errors.password2?.message}</p>
         )}
         <button disabled={successInput ? false : true}>제출</button>
+        {!successEmail && (
+          <p className="warning">
+            이메일 형식을 확인해 주세요. 이메일은 @와 .을 포함하여야 합니다.
+          </p>
+        )}
+        {!successPassword && (
+          <p className="warning">비밀번호는 8자리 이상이어야 합니다.</p>
+        )}
+        {!successPassword2 && (
+          <p className="warning">입력하신 비밀번호와 동일하여야 합니다.</p>
+        )}
         {fetchError.status !== null ? (
           <p className="warning">
             {fetchError.status} : {fetchError.message}

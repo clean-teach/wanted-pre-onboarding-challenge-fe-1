@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -9,6 +8,7 @@ const Wrapper = styled.li`
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 4rem;
+  align-content: center;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
   padding: 1rem;
   border-radius: 0.25rem;
@@ -18,12 +18,19 @@ const Wrapper = styled.li`
     box-shadow: 0 0 2rem rgba(0, 0, 0, 0.4);
     transition: 0.5s;
   }
-  a:hover {
-    text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5);
+  a {
+    display: flex;
+    align-items: center;
     transition: 0.2s;
+    &:hover {
+      text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5);
+    }
   }
 `;
-const DeleteBtn = styled.button``;
+const DeleteBtn = styled.button`
+  padding: 0.5rem;
+  background-color: ${(props) => props.theme.negativeAssistanceColor};
+`;
 const SwitchCurrent = styled.button``;
 
 interface IProps {
@@ -39,15 +46,11 @@ function TodoItem({ token, todoId, todoTitle, todoCurrent }: IProps) {
   const onRemove = () => {
     const response = fetchDeleteTodos({ todoId, token });
     response
-      .then((response) => {
+      .then(() => {
         setTodos((oldTodos) => oldTodos.filter((todo) => todo.id !== todoId));
       })
       .catch((error) => console.log(error));
   };
-
-  useEffect(() => {
-    console.log(params);
-  }, [params]);
 
   return (
     <Wrapper className={todoId === params.todoId ? 'isClicked' : ''}>
