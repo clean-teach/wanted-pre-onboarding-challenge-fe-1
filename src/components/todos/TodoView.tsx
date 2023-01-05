@@ -23,6 +23,7 @@ const Wrapper = styled.div`
     width: 100%;
     margin-top: 1rem;
     padding: 1rem;
+    font-size: 1rem;
   }
   input {
     width: 100%;
@@ -133,7 +134,7 @@ function TodoView({ token }: IProps) {
             </dd>
           </dl>
           <button type="submit">확인</button>
-          <button type="button" onClick={onEditModeEnd}>
+          <button type="button" onClick={onEditModeEnd} className="cancel">
             취소
           </button>
         </form>

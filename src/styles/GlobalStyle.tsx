@@ -77,7 +77,9 @@ button {
   &:disabled {
     cursor: default;
     background: ${(props) => props.theme.grayColor};
-    color: ${(props) => props.theme.bgColor};
+  }
+  &.cancel {
+    background: ${(props) => props.theme.negativeAssistanceColor};
   }
 }
 input[type='text'], input[type='password'], input[type='email']{
