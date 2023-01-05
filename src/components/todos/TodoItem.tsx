@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import { Link, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -6,8 +7,8 @@ import { TodoCurrent, TodosState } from '../../atoms';
 
 const Wrapper = styled.li`
   width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 4rem;
+  display: flex;
+  justify-content: space-between;
   align-content: center;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
   padding: 1rem;
@@ -29,7 +30,7 @@ const Wrapper = styled.li`
 `;
 const DeleteBtn = styled.button`
   padding: 0.5rem;
-  background-color: ${(props) => props.theme.negativeAssistanceColor};
+  background: none;
 `;
 const SwitchCurrent = styled.button``;
 
@@ -44,18 +45,23 @@ function TodoItem({ token, todoId, todoTitle, todoCurrent }: IProps) {
   const params = useParams();
   const setTodos = useSetRecoilState(TodosState);
   const onRemove = () => {
-    const response = fetchDeleteTodos({ todoId, token });
-    response
-      .then(() => {
-        setTodos((oldTodos) => oldTodos.filter((todo) => todo.id !== todoId));
-      })
-      .catch((error) => console.log(error));
+    const result = confirm('정말 삭제 하시겠습니까?');
+    if (result) {
+      const response = fetchDeleteTodos({ todoId, token });
+      response
+        .then(() => {
+          setTodos((oldTodos) => oldTodos.filter((todo) => todo.id !== todoId));
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   return (
     <Wrapper className={todoId === params.todoId ? 'isClicked' : ''}>
       <Link to={`${todoId}`}>{todoTitle}</Link>
-      <DeleteBtn onClick={onRemove}>삭제</DeleteBtn>
+      <DeleteBtn onClick={onRemove} title="삭제">
+        ❌
+      </DeleteBtn>
     </Wrapper>
   );
 }

@@ -6,18 +6,29 @@ import { fetchGetTodoById, fetchUpdateTodo } from '../../api';
 import { ITodo } from '../../atoms';
 
 const Wrapper = styled.div`
-  position: fixed;
-  width: calc(1024px / 2);
-  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
-  padding: 2rem;
-  border-radius: 0.5rem;
   .guide {
     font-size: 1rem;
   }
+  h3 {
+    display: none;
+  }
+  h4.title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  p.content {
+    font-size: 1.25rem;
+    font-weight: bold;
+    line-height: 1.75rem;
+  }
   dt {
-    font-size: 1rem;
     font-weight: bold;
     margin: 1rem 0 0.5rem;
+  }
+  dt,
+  dd {
+    font-size: 0.875rem;
   }
   button {
     width: 100%;
@@ -99,7 +110,7 @@ function TodoView({ token }: IProps) {
 
   return (
     <Wrapper>
-      <h3>할 일 목록 자세히 보기</h3>
+      <h3>자세히 보기</h3>
       {todo === undefined ? (
         <p className="guide">
           현재 선택 된 To do 가 없습니다. To do 를 클릭해 주세요.
@@ -116,6 +127,7 @@ function TodoView({ token }: IProps) {
                 id="todoTitle"
                 {...register('todoTitle', {
                   required: '제목을 입력 해 주세요.',
+                  maxLength: 20,
                 })}
               />
             </dd>
@@ -123,11 +135,11 @@ function TodoView({ token }: IProps) {
               <label htmlFor="todoContent">내용</label>
             </dt>
             <dd>
-              <input
-                type="text"
+              <textarea
                 id="todoContent"
                 {...register('todoContent', {
                   required: '내용을 입력 해 주세요.',
+                  maxLength: 100,
                   value: todo.content,
                 })}
               />
@@ -140,17 +152,15 @@ function TodoView({ token }: IProps) {
         </form>
       ) : (
         <>
+          <h4 className="title">{todo.title}</h4>
+          <p className="content">{todo.content}</p>
           <dl>
-            <dt>제목</dt>
-            <dd>{todo.title}</dd>
-            <dt>내용</dt>
-            <dd>{todo.content}</dd>
             <dt>생성 날짜</dt>
             <dd>{getDate(todo.createdAt)}</dd>
             <dt>수정 날짜</dt>
             <dd>{getDate(todo.updatedAt)}</dd>
           </dl>
-          <button onClick={onEditModeChange}>수정</button>
+          <button onClick={onEditModeChange}>할 일 수정</button>
         </>
       )}
     </Wrapper>

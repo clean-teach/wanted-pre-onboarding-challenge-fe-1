@@ -79,10 +79,12 @@ button {
     background: ${(props) => props.theme.grayColor};
   }
   &.cancel {
-    background: ${(props) => props.theme.negativeAssistanceColor};
+    border: 1px solid ${(props) => props.theme.grayColor};
+    background: none;
+    color: ${(props) => props.theme.txtColor};
   }
 }
-input[type='text'], input[type='password'], input[type='email']{
+input[type='text'], input[type='password'], input[type='email'], textarea {
   width: 100%;
   font-size: 1rem;
   padding: 1rem;

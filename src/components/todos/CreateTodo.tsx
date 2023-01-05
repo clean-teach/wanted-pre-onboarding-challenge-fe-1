@@ -6,6 +6,9 @@ import { fetchCreateTodo } from '../../api';
 
 const Wrapper = styled.div`
   width: 100%;
+  h3 {
+    display: none;
+  }
   form {
     display: flex;
     flex-direction: column;
@@ -83,29 +86,36 @@ function CreateTodo({ token }: IProps) {
 
   return (
     <Wrapper>
-      <h3>할 일 목록 추가</h3>
+      <h3>할 일 목록 생성</h3>
       <form onSubmit={handleSubmit(onValid)}>
         <input
           {...register('newTodoTitle', {
-            required: '할 일의 제목을 입력해 주세요.',
+            required: '제목을 입력해 주세요.',
+            maxLength: 20,
           })}
           type="text"
-          placeholder="새로 추가 할, 할 일의 제목을 입력해 주세요."
+          placeholder="제목을 입력해 주세요."
         />
         {errors.newTodoTitle?.type === 'required' && (
           <p className="warning">{errors.newTodoTitle.message}</p>
         )}
-        <input
+        {watch().newTodoTitle?.length > 20 && (
+          <p className="warning">제목은 20자 이내로 작성해 주세요</p>
+        )}
+        <textarea
           {...register('newTodoContent', {
             required: '할 일을 입력해 주세요.',
+            maxLength: 100,
           })}
-          type="text"
           placeholder="새로 추가 할, 할 일을 입력해 주세요."
         />
         {errors.newTodoContent?.type === 'required' && (
           <p className="warning">{errors.newTodoContent.message}</p>
         )}
-        <button disabled={successNewTodo ? false : true}>추가</button>
+        {watch().newTodoContent.length > 100 && (
+          <p className="warning">할 일은 100자 이내로 작성해 주세요</p>
+        )}
+        <button disabled={successNewTodo ? false : true}>할 일 생성</button>
         {fetchError.status !== null ? (
           <p className="warning">
             {fetchError.status} : {fetchError.message}

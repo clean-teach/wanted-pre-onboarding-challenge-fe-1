@@ -17,18 +17,18 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
   h3 {
     text-align: center;
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 2rem;
   }
-`;
-const Title = styled.h2`
-  text-align: center;
-  font-weight: bold;
-  font-size: 2rem;
-  padding: 2rem 0;
 `;
 const TodoArea = styled.div`
   width: 1024px;
@@ -40,17 +40,24 @@ const TodoArea = styled.div`
     grid-column: 2/3;
     grid-row: 1/3;
   }
+  & > div > div {
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    border-radius: 0.5rem;
+  }
+`;
+const FixedArea = styled.div`
+  position: fixed;
+  width: calc(1024px / 2);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding-right: 1rem;
 `;
 const ScrollArea = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 20rem 1fr;
   gap: 2rem;
-  & > div {
-    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
-    padding: 2rem;
-    border-radius: 0.5rem;
-  }
 `;
 const ListArea = styled.div`
   ul {
@@ -72,7 +79,7 @@ function TodoList() {
       response
         .then((response) => {
           const responseTodos = response.data.data;
-          setTodos(responseTodos);
+          setTodos(responseTodos.reverse());
           setError('');
         })
         .catch((error) => {
@@ -89,13 +96,14 @@ function TodoList() {
 
   return (
     <Wrapper>
-      <Title>To do List</Title>
       <TodoArea>
-        <TodoView token={token} />
-        <ScrollArea>
+        <FixedArea>
           <CreateTodo token={token} />
+          <TodoView token={token} />
+        </FixedArea>
+        <ScrollArea>
           <ListArea>
-            <h3>할 일 목록</h3>
+            <h2>할 일 목록</h2>
             {error === '' ? (
               <ul>
                 {todos.map((todo) => {
