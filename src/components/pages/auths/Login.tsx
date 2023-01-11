@@ -8,7 +8,7 @@ import { errorState, isLoggedInState } from '../../../atoms/atoms';
 import { Link } from 'react-router-dom';
 import { LOCALSTORAGE_LOGINTOKEN } from '../../../utils/strings';
 import { setClassNameByValid } from '../../../utils/function';
-import { getValidSignInFrom } from '../../../hooks/auth';
+import { getValidSignInFrom } from '../../../hooks/auth/signIn';
 import { ISignInForm } from '../../../types/authComponentTypes';
 
 function Login() {
@@ -26,7 +26,7 @@ function Login() {
   const [successEmail, successPassword, successInput] =
     getValidSignInFrom(watch);
 
-  const onValid = (data: ISignInForm) => {
+  const handleSignIn = (data: ISignInForm) => {
     const response = fetchLogIn({
       email: data.email,
       password: data.password,
@@ -57,7 +57,7 @@ function Login() {
   return (
     <AuthArea>
       <h2>로그인</h2>
-      <form onSubmit={handleSubmit(onValid)}>
+      <form onSubmit={handleSubmit(handleSignIn)}>
         <input
           {...register('email', {
             required: '이메일에 @ 와 . 이 포함되어야 합니다.',

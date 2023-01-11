@@ -1,6 +1,6 @@
 import { UseFormWatch } from 'react-hook-form';
-import { ISignInForm, ISignUpForm } from '../types/authComponentTypes';
-import { regExpEmail } from '../utils/regexp';
+import { ISignUpForm } from '../../types/authComponentTypes';
+import { regExpEmail } from '../../utils/regexp';
 
 export const getValidSignUpFrom = (watch: UseFormWatch<ISignUpForm>) => {
   const successEmail = regExpEmail.test(watch().email);
@@ -12,11 +12,4 @@ export const getValidSignUpFrom = (watch: UseFormWatch<ISignUpForm>) => {
     successEmail && successPassword && successPasswordConfirm;
 
   return [successEmail, successPassword, successPasswordConfirm, successInput];
-};
-export const getValidSignInFrom = (watch: UseFormWatch<ISignInForm>) => {
-  const successEmail = regExpEmail.test(watch().email);
-  const successPassword = watch().password?.length >= 8;
-  const successInput = successEmail && successPassword;
-
-  return [successEmail, successPassword, successInput];
 };

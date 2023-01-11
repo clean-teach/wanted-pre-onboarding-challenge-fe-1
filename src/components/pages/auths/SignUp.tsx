@@ -8,7 +8,7 @@ import { errorState } from '../../../atoms/atoms';
 import { useNavigate } from 'react-router-dom';
 import { setClassNameByValid } from '../../../utils/function';
 import { ISignUpForm } from '../../../types/authComponentTypes';
-import { getValidSignUpFrom } from '../../../hooks/auth';
+import { getValidSignUpFrom } from '../../../hooks/auth/signUp';
 
 function SignUp() {
   const [isDefault, setIsDefault] = useState(true);
@@ -25,7 +25,7 @@ function SignUp() {
   const [successEmail, successPassword, successPasswordConfirm, successInput] =
     getValidSignUpFrom(watch);
 
-  const onValid = (data: ISignUpForm) => {
+  const handleSignUp = (data: ISignUpForm) => {
     const response = fetchSignUp({
       email: data.email,
       password: data.password,
@@ -55,7 +55,7 @@ function SignUp() {
   return (
     <AuthArea>
       <h2>회원가입</h2>
-      <form onSubmit={handleSubmit(onValid)}>
+      <form onSubmit={handleSubmit(handleSignUp)}>
         <input
           {...register('email', {
             required: '이메일에 @ 와 . 이 포함되어야 합니다.',
