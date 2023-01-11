@@ -2,6 +2,7 @@ import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form';
 import styled from 'styled-components';
 import { ITodo } from '../../types/atomsTypes';
 import { IViewTodoForm } from '../../types/todoComponentTypes';
+import { getDateStringKorean } from '../../utils/function';
 
 const Wrapper = styled.div`
   .guide {
@@ -45,7 +46,6 @@ interface IProps {
   handleEditTodo: (data: any) => void;
   onEditModeChange: () => void;
   onEditModeEnd: () => void;
-  getDate: (date: string | undefined) => string | undefined;
   handleSubmit: UseFormHandleSubmit<IViewTodoForm>;
   register: UseFormRegister<IViewTodoForm>;
 }
@@ -55,7 +55,6 @@ function TodoViewPresentational({
   isEdit,
   handleEditTodo,
   onEditModeEnd,
-  getDate,
   onEditModeChange,
   handleSubmit,
   register,
@@ -105,9 +104,9 @@ function TodoViewPresentational({
             <p className="content">{todo.content}</p>
             <dl>
               <dt>생성 날짜</dt>
-              <dd>{getDate(todo.createdAt)}</dd>
+              <dd>{getDateStringKorean(todo.createdAt)}</dd>
               <dt>수정 날짜</dt>
-              <dd>{getDate(todo.updatedAt)}</dd>
+              <dd>{getDateStringKorean(todo.updatedAt)}</dd>
             </dl>
             <button onClick={onEditModeChange}>할 일 수정</button>
           </>
