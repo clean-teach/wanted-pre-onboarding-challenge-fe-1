@@ -1,43 +1,27 @@
 import axios from 'axios';
+import {
+  IPropsAuths,
+  IPropsGetTodos,
+  IPropsPostTodos,
+  IPropsTodo,
+  IPropsUpdateTodo,
+} from '../types/apiPropsTypes';
 
 const BASE_URL = 'http://localhost:8080';
 
-interface IProps {
-  email: string;
-  password: string;
-}
-
-export const fetchSignUp = async ({ email, password }: IProps) => {
+export const fetchSignUp = async ({ email, password }: IPropsAuths) => {
   return await axios.post(`${BASE_URL}/users/create`, {
     email,
     password,
   });
 };
-export const fetchLogIn = async ({ email, password }: IProps) => {
+export const fetchLogIn = async ({ email, password }: IPropsAuths) => {
   return await axios.post(`${BASE_URL}/users/login`, {
     email,
     password,
   });
 };
 
-interface IPropsPostTodos {
-  title: string;
-  content: string;
-  token: string;
-}
-interface IPropsGetTodos {
-  token: string;
-}
-interface IPropsTodo {
-  todoId: string;
-  token: string;
-}
-interface IPropsUpdateTodo {
-  todoId: string;
-  token: string;
-  title: string;
-  content: string;
-}
 export const fetchCreateTodo = async ({
   title,
   content,

@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { Outlet } from 'react-router-dom';
-import Header from './components/Header';
+import Header from './components/layouts/Header';
 import { useNavigate } from 'react-router-dom';
-import { isLoggedInState } from './atoms';
+import { isLoggedInState } from './atoms/atoms';
 import { LOCALSTORAGE_LOGINTOKEN } from './utils/strings';
 
 function App() {

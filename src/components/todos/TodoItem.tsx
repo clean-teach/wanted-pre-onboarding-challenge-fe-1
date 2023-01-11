@@ -2,8 +2,9 @@
 import { Link, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { fetchDeleteTodos } from '../../api';
-import { TodoCurrent, TodosState } from '../../atoms';
+import { fetchDeleteTodos } from '../../api/api';
+import { TodosState } from '../../atoms/atoms';
+import { TodoCurrent } from '../../types/atomsTypes';
 
 const Wrapper = styled.li`
   width: 100%;

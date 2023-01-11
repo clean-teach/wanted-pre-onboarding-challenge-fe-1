@@ -1,8 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { errorState, ITodo, TodoCurrent, TodosState } from '../../atoms';
-import { fetchCreateTodo } from '../../api';
+import { errorState, TodosState } from '../../atoms/atoms';
+import { fetchCreateTodo } from '../../api/api';
+import { ITodo, TodoCurrent } from '../../types/atomsTypes';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -110,9 +111,9 @@ function CreateTodo({ token }: IProps) {
           placeholder="새로 추가 할, 할 일을 입력해 주세요."
         />
         {errors.newTodoContent?.type === 'required' && (
-          <p className="warning">{errors.newTodoContent.message}</p>
+          <p className="warning">{errors.newTodoContent?.message}</p>
         )}
-        {watch().newTodoContent.length > 100 && (
+        {watch().newTodoContent?.length > 100 && (
           <p className="warning">할 일은 100자 이내로 작성해 주세요</p>
         )}
         <button disabled={successNewTodo ? false : true}>할 일 생성</button>

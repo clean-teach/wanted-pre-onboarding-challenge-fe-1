@@ -1,9 +1,9 @@
 // import { useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LOCALSTORAGE_LOGINTOKEN } from '../utils/strings';
+import { LOCALSTORAGE_LOGINTOKEN } from '../../utils/strings';
 import { useRecoilState } from 'recoil';
-import { errorState, isLoggedInState } from '../atoms';
+import { errorState, isLoggedInState } from '../../atoms/atoms';
 
 const Wrapper = styled.header`
   width: 100%;

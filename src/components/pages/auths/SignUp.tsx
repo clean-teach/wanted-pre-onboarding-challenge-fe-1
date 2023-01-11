@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { AuthArea } from '../../styles/GlobalStyle';
+import { AuthArea } from '../../../styles/GlobalStyle';
 import { useForm } from 'react-hook-form';
-import { regExpEmail } from '../../utils/regexp';
-import { fetchLogIn } from '../../api';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { errorState, isLoggedInState } from '../../atoms';
-import { Link } from 'react-router-dom';
-import { LOCALSTORAGE_LOGINTOKEN } from '../../utils/strings';
-import { setClassNameByValid } from '../../utils/function';
+import { regExpEmail } from '../../../utils/regexp';
+import { fetchSignUp } from '../../../api/api';
+import { useRecoilState } from 'recoil';
+import { errorState } from '../../../atoms/atoms';
+import { useNavigate } from 'react-router-dom';
+import { setClassNameByValid } from '../../../utils/function';
 
 interface IForm {
   email: string;
@@ -15,10 +14,10 @@ interface IForm {
   password2: string;
 }
 
-function Login() {
-  const [fetchError, setFetchError] = useRecoilState(errorState);
+function SignUp() {
   const [isDefault, setIsDefault] = useState(true);
-  const setIsLoggedIn = useSetRecoilState(isLoggedInState);
+  const [fetchError, setFetchError] = useRecoilState(errorState);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -29,25 +28,26 @@ function Login() {
 
   const successEmail = regExpEmail.test(watch().email);
   const successPassword = watch().password?.length >= 8;
-  const successInput = successEmail && successPassword;
+  const successPassword2 =
+    watch().password2?.length >= 8 && watch().password === watch().password2;
+  const successInput = successEmail && successPassword && successPassword2;
 
   const onValid = (data: IForm) => {
     setIsDefault(false);
-    const response = fetchLogIn({
+    const response = fetchSignUp({
       email: data.email,
       password: data.password,
     });
     response
       .then((response) => {
-        window.localStorage.setItem(
-          LOCALSTORAGE_LOGINTOKEN,
-          response.data.token,
-        );
-        setIsLoggedIn(true);
-        setFetchError({
-          status: null,
-          message: '',
-        });
+        if (response.status === 200) {
+          setFetchError({
+            status: null,
+            message: '',
+          });
+          alert('회원가입이 완료되었습니다.');
+          navigate('../login');
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -60,7 +60,7 @@ function Login() {
 
   return (
     <AuthArea>
-      <h2>로그인</h2>
+      <h2>회원가입</h2>
       <form onSubmit={handleSubmit(onValid)}>
         <input
           {...register('email', {
@@ -85,28 +85,55 @@ function Login() {
             minLength: 8,
           })}
           type="password"
-          placeholder="비밀번호를 입력해 주세요"
+          placeholder="비밀번호는 8자 이상을 입력해주세요"
           className={setClassNameByValid({
             isDefault,
             successCondition: successPassword,
             warningCondition:
-              watch().email?.length !== 0 || fetchError.status !== null,
+              watch().password?.length !== 0 || fetchError.status !== null,
           })}
         />
         {errors.password?.type === 'minLength' && (
           <p className="warning">{errors.password?.message}</p>
         )}
+        <input
+          {...register('password2', {
+            required:
+              '입력하신 비밀번호와 동일하게 비밀번호 확인을 입력해 주세요',
+            minLength: 8,
+          })}
+          type="password"
+          placeholder="비밀번호 확인"
+          className={setClassNameByValid({
+            isDefault,
+            successCondition: successPassword2,
+            warningCondition:
+              watch().password2?.length !== 0 || fetchError.status !== null,
+          })}
+        />
+        {errors.password2?.type === 'minLength' && (
+          <p className="warning">{errors.password2?.message}</p>
+        )}
         <button disabled={successInput ? false : true}>제출</button>
+        {!successEmail && (
+          <p className="warning">
+            이메일 형식을 확인해 주세요. 이메일은 @와 .을 포함하여야 합니다.
+          </p>
+        )}
+        {!successPassword && (
+          <p className="warning">비밀번호는 8자리 이상이어야 합니다.</p>
+        )}
+        {!successPassword2 && (
+          <p className="warning">입력하신 비밀번호와 동일하여야 합니다.</p>
+        )}
         {fetchError.status !== null ? (
           <p className="warning">
             {fetchError.status} : {fetchError.message}
           </p>
         ) : null}
       </form>
-      <hr />
-      <Link to="../signup">아직 회원이 아니신가요?</Link>
     </AuthArea>
   );
 }
 
-export default Login;
+export default SignUp;

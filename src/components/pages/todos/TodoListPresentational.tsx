@@ -1,13 +1,8 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { fetchGetTodos } from '../../api';
-import { TodosState } from '../../atoms';
-import { LOCALSTORAGE_LOGINTOKEN } from '../../utils/strings';
-import CreateTodo from './CreateTodo';
-import TodoItem from './TodoItem';
-import TodoView from './TodoView';
+import { ITodo } from '../../../types/atomsTypes';
+import CreateTodo from '../../todos/CreateTodo';
+import TodoItem from '../../todos/TodoItem';
+import TodoView from '../../todos/TodoView';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -67,33 +62,13 @@ const ListArea = styled.div`
   }
 `;
 
-function TodoList() {
-  const navigate = useNavigate();
-  const token = window.localStorage.getItem(LOCALSTORAGE_LOGINTOKEN);
-  const [todos, setTodos] = useRecoilState(TodosState);
-  const [error, setError] = useState('');
+interface IProps {
+  token: string;
+  error: string;
+  todos: ITodo[];
+}
 
-  useEffect(() => {
-    if (token) {
-      const response = fetchGetTodos({ token });
-      response
-        .then((response) => {
-          const responseTodos = response.data.data;
-          setTodos(responseTodos.reverse());
-          setError('');
-        })
-        .catch((error) => {
-          console.log(error);
-          setError(error.message);
-        });
-    }
-  }, [todos]);
-
-  if (!token) {
-    navigate('/auth/login');
-    return <p>로그인이 필요합니다.</p>;
-  }
-
+function TodoListPresentational({ token, error, todos }: IProps) {
   return (
     <Wrapper>
       <TodoArea>
@@ -128,4 +103,4 @@ function TodoList() {
   );
 }
 
-export default TodoList;
+export default TodoListPresentational;

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { fetchGetTodoById, fetchUpdateTodo } from '../../api';
-import { ITodo } from '../../atoms';
+import { fetchGetTodoById, fetchUpdateTodo } from '../../api/api';
+import { ITodo } from '../../types/atomsTypes';
 
 const Wrapper = styled.div`
   .guide {
