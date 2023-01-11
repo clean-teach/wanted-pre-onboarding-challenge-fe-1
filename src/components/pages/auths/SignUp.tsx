@@ -7,12 +7,8 @@ import { useRecoilState } from 'recoil';
 import { errorState } from '../../../atoms/atoms';
 import { useNavigate } from 'react-router-dom';
 import { setClassNameByValid } from '../../../utils/function';
-
-interface IForm {
-  email: string;
-  password: string;
-  password2: string;
-}
+import { ISignUpForm } from '../../../types/authComponentTypes';
+import { getValidSignUpFrom } from '../../../hooks/auth';
 
 function SignUp() {
   const [isDefault, setIsDefault] = useState(true);
@@ -24,20 +20,17 @@ function SignUp() {
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm<IForm>();
+  } = useForm<ISignUpForm>();
 
-  const successEmail = regExpEmail.test(watch().email);
-  const successPassword = watch().password?.length >= 8;
-  const successPassword2 =
-    watch().password2?.length >= 8 && watch().password === watch().password2;
-  const successInput = successEmail && successPassword && successPassword2;
+  const [successEmail, successPassword, successPasswordConfirm, successInput] =
+    getValidSignUpFrom(watch);
 
-  const onValid = (data: IForm) => {
-    setIsDefault(false);
+  const onValid = (data: ISignUpForm) => {
     const response = fetchSignUp({
       email: data.email,
       password: data.password,
     });
+
     response
       .then((response) => {
         if (response.status === 200) {
@@ -56,6 +49,7 @@ function SignUp() {
           message: error.response.data.details,
         });
       });
+    setIsDefault(false);
   };
 
   return (
@@ -97,7 +91,7 @@ function SignUp() {
           <p className="warning">{errors.password?.message}</p>
         )}
         <input
-          {...register('password2', {
+          {...register('passwordConfirm', {
             required:
               '입력하신 비밀번호와 동일하게 비밀번호 확인을 입력해 주세요',
             minLength: 8,
@@ -106,13 +100,14 @@ function SignUp() {
           placeholder="비밀번호 확인"
           className={setClassNameByValid({
             isDefault,
-            successCondition: successPassword2,
+            successCondition: successPasswordConfirm,
             warningCondition:
-              watch().password2?.length !== 0 || fetchError.status !== null,
+              watch().passwordConfirm?.length !== 0 ||
+              fetchError.status !== null,
           })}
         />
-        {errors.password2?.type === 'minLength' && (
-          <p className="warning">{errors.password2?.message}</p>
+        {errors.passwordConfirm?.type === 'minLength' && (
+          <p className="warning">{errors.passwordConfirm?.message}</p>
         )}
         <button disabled={successInput ? false : true}>제출</button>
         {!successEmail && (
@@ -123,7 +118,7 @@ function SignUp() {
         {!successPassword && (
           <p className="warning">비밀번호는 8자리 이상이어야 합니다.</p>
         )}
-        {!successPassword2 && (
+        {!successPasswordConfirm && (
           <p className="warning">입력하신 비밀번호와 동일하여야 합니다.</p>
         )}
         {fetchError.status !== null ? (

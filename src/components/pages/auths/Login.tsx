@@ -8,12 +8,8 @@ import { errorState, isLoggedInState } from '../../../atoms/atoms';
 import { Link } from 'react-router-dom';
 import { LOCALSTORAGE_LOGINTOKEN } from '../../../utils/strings';
 import { setClassNameByValid } from '../../../utils/function';
-
-interface IForm {
-  email: string;
-  password: string;
-  password2: string;
-}
+import { getValidSignInFrom } from '../../../hooks/auth';
+import { ISignInForm } from '../../../types/authComponentTypes';
 
 function Login() {
   const [fetchError, setFetchError] = useRecoilState(errorState);
@@ -25,18 +21,17 @@ function Login() {
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm<IForm>();
+  } = useForm<ISignInForm>();
 
-  const successEmail = regExpEmail.test(watch().email);
-  const successPassword = watch().password?.length >= 8;
-  const successInput = successEmail && successPassword;
+  const [successEmail, successPassword, successInput] =
+    getValidSignInFrom(watch);
 
-  const onValid = (data: IForm) => {
-    setIsDefault(false);
+  const onValid = (data: ISignInForm) => {
     const response = fetchLogIn({
       email: data.email,
       password: data.password,
     });
+
     response
       .then((response) => {
         window.localStorage.setItem(
@@ -56,6 +51,7 @@ function Login() {
           message: error.response.data.details,
         });
       });
+    setIsDefault(false);
   };
 
   return (
