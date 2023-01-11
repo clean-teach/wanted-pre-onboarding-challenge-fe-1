@@ -1,56 +1,43 @@
-import { useState } from 'react';
 import { AuthArea } from '../../../styles/GlobalStyle';
-import { useForm } from 'react-hook-form';
 import { regExpEmail } from '../../../utils/regexp';
-import { fetchSignUp } from '../../../api/api';
-import { useRecoilState } from 'recoil';
-import { errorState } from '../../../atoms/atoms';
-import { useNavigate } from 'react-router-dom';
 import { setClassNameByValid } from '../../../utils/function';
-import { ISignUpForm } from '../../../types/authComponentTypes';
 import { getValidSignUpFrom } from '../../../hooks/auth/signUp';
+import { ISignUpForm } from '../../../types/authComponentTypes';
+import {
+  FieldErrorsImpl,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormWatch,
+} from 'react-hook-form';
+import { IErrorState } from '../../../types/atomsTypes';
 
-function SignUp() {
-  const [isDefault, setIsDefault] = useState(true);
-  const [fetchError, setFetchError] = useRecoilState(errorState);
-  const navigate = useNavigate();
+interface IProps {
+  register: UseFormRegister<ISignUpForm>;
+  watch: UseFormWatch<ISignUpForm>;
+  handleSubmit: UseFormHandleSubmit<ISignUpForm>;
+  handleSignUp: (data: ISignUpForm) => void;
+  isDefault: boolean;
+  fetchError: IErrorState;
+  errors: Partial<
+    FieldErrorsImpl<{
+      email: string;
+      password: string;
+      passwordConfirm: string;
+    }>
+  >;
+}
 
-  const {
-    register,
-    watch,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ISignUpForm>();
-
+function SignUpPresentational({
+  register,
+  handleSubmit,
+  watch,
+  handleSignUp,
+  isDefault,
+  fetchError,
+  errors,
+}: IProps) {
   const [successEmail, successPassword, successPasswordConfirm, successInput] =
     getValidSignUpFrom(watch);
-
-  const handleSignUp = (data: ISignUpForm) => {
-    const response = fetchSignUp({
-      email: data.email,
-      password: data.password,
-    });
-
-    response
-      .then((response) => {
-        if (response.status === 200) {
-          setFetchError({
-            status: null,
-            message: '',
-          });
-          alert('회원가입이 완료되었습니다.');
-          navigate('../login');
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setFetchError({
-          status: error.response.status,
-          message: error.response.data.details,
-        });
-      });
-    setIsDefault(false);
-  };
 
   return (
     <AuthArea>
@@ -131,4 +118,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignUpPresentational;

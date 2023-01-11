@@ -1,58 +1,43 @@
-import { useState } from 'react';
 import { AuthArea } from '../../../styles/GlobalStyle';
-import { useForm } from 'react-hook-form';
 import { regExpEmail } from '../../../utils/regexp';
-import { fetchLogIn } from '../../../api/api';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { errorState, isLoggedInState } from '../../../atoms/atoms';
 import { Link } from 'react-router-dom';
-import { LOCALSTORAGE_LOGINTOKEN } from '../../../utils/strings';
 import { setClassNameByValid } from '../../../utils/function';
 import { getValidSignInFrom } from '../../../hooks/auth/signIn';
+import {
+  FieldErrorsImpl,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormWatch,
+} from 'react-hook-form';
 import { ISignInForm } from '../../../types/authComponentTypes';
+import { IErrorState } from '../../../types/atomsTypes';
 
-function Login() {
-  const [fetchError, setFetchError] = useRecoilState(errorState);
-  const [isDefault, setIsDefault] = useState(true);
-  const setIsLoggedIn = useSetRecoilState(isLoggedInState);
+interface IProps {
+  register: UseFormRegister<ISignInForm>;
+  watch: UseFormWatch<ISignInForm>;
+  handleSubmit: UseFormHandleSubmit<ISignInForm>;
+  handleSignIn: (data: ISignInForm) => void;
+  isDefault: boolean;
+  fetchError: IErrorState;
+  errors: Partial<
+    FieldErrorsImpl<{
+      email: string;
+      password: string;
+    }>
+  >;
+}
 
-  const {
-    register,
-    watch,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ISignInForm>();
-
+function LoginPresentational({
+  register,
+  watch,
+  handleSubmit,
+  handleSignIn,
+  isDefault,
+  fetchError,
+  errors,
+}: IProps) {
   const [successEmail, successPassword, successInput] =
     getValidSignInFrom(watch);
-
-  const handleSignIn = (data: ISignInForm) => {
-    const response = fetchLogIn({
-      email: data.email,
-      password: data.password,
-    });
-
-    response
-      .then((response) => {
-        window.localStorage.setItem(
-          LOCALSTORAGE_LOGINTOKEN,
-          response.data.token,
-        );
-        setIsLoggedIn(true);
-        setFetchError({
-          status: null,
-          message: '',
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        setFetchError({
-          status: error.response.status,
-          message: error.response.data.details,
-        });
-      });
-    setIsDefault(false);
-  };
 
   return (
     <AuthArea>
@@ -105,4 +90,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginPresentational;

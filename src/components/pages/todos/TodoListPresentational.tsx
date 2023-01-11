@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { ITodo } from '../../../types/atomsTypes';
-import CreateTodo from '../../todos/CreateTodo';
-import TodoItem from '../../todos/TodoItem';
-import TodoView from '../../todos/TodoView';
+import CreateTodoContainer from '../../todos/CreateTodoContainer';
+import TodoItemContainer from '../../todos/TodoItemContainer';
+import TodoViewContainer from '../../todos/TodoViewContainer';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -73,8 +73,8 @@ function TodoListPresentational({ token, error, todos }: IProps) {
     <Wrapper>
       <TodoArea>
         <FixedArea>
-          <CreateTodo token={token} />
-          <TodoView token={token} />
+          <CreateTodoContainer token={token} />
+          <TodoViewContainer token={token} />
         </FixedArea>
         <ScrollArea>
           <ListArea>
@@ -83,7 +83,7 @@ function TodoListPresentational({ token, error, todos }: IProps) {
               <ul>
                 {todos.map((todo) => {
                   return (
-                    <TodoItem
+                    <TodoItemContainer
                       key={todo.id}
                       token={token}
                       todoId={todo.id}

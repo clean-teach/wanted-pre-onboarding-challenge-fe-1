@@ -1,9 +1,6 @@
 // import { useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LOCALSTORAGE_LOGINTOKEN } from '../../utils/strings';
-import { useRecoilState } from 'recoil';
-import { errorState, isLoggedInState } from '../../atoms/atoms';
+import { Link, Location } from 'react-router-dom';
 
 const Wrapper = styled.header`
   width: 100%;
@@ -30,25 +27,17 @@ const Btn = styled.div`
   padding: 0.5rem;
 `;
 
-function Header() {
-  const currentLocation = useLocation();
-  const [fetchError, setFetchError] = useRecoilState(errorState);
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
-  const navigate = useNavigate();
-  const onLogOut = () => {
-    window.localStorage.removeItem(LOCALSTORAGE_LOGINTOKEN);
-    setIsLoggedIn(false);
-    navigate('/auth/login');
-    setFetchError({
-      status: null,
-      message: '',
-    });
-  };
+interface IProps {
+  isLoggedIn: boolean;
+  onLogOut: () => void;
+  currentLocation: Location;
+}
 
-  // useEffect(() => {
-  //   console.log(currentLocation);
-  // }, [currentLocation]);
-
+function HeaderPresentational({
+  isLoggedIn,
+  onLogOut,
+  currentLocation,
+}: IProps) {
   return (
     <Wrapper>
       <Title>원티드 프리온보딩 챌린지 프론트엔드 코스 사전과제 : 김청훈</Title>
@@ -69,4 +58,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default HeaderPresentational;
