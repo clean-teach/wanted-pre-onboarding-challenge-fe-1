@@ -34,7 +34,7 @@ function TodoViewContainer({ token }: IProps) {
       setIsEdit((current) => !current);
     }
   };
-  const handleEditTodo = (data: any) => {
+  const handleEditTodo = (data: IViewTodoForm) => {
     if (params.todoId) {
       const response = fetchUpdateTodo({
         todoId: params.todoId,
