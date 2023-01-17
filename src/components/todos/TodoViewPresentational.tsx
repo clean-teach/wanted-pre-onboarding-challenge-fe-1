@@ -43,7 +43,7 @@ const Wrapper = styled.div`
 interface IProps {
   todo: ITodo;
   isEdit: boolean;
-  handleEditTodo: (data: any) => void;
+  handleEditTodo: (data: IViewTodoForm) => void;
   onEditModeChange: () => void;
   onEditModeEnd: () => void;
   handleSubmit: UseFormHandleSubmit<IViewTodoForm>;
