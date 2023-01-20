@@ -5,7 +5,11 @@
 좋은 경험을 통하여 많이 배우고 싶습니다.
 잘 부탁 드립니다!
 
-## API Test 참고 및 사전과제 가이드
+## 개요 추가
+
+1. [API Test 참고 및 사전과제 가이드][section01]
+
+[section01]: ## API Test 참고 및 사전과제 가이드
 
 https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api
 
