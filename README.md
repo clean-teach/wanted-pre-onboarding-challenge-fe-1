@@ -12,7 +12,7 @@
 ## 개요
 
 1. [Demo 실행 방법](#demo-실행-방법)
-   1. [git hub page 배포 링크 (API TEST 서버는 따로 실행 필요)](<#git-hub-page-배포-링크-(API-TEST-서버는-따로-실행-필요)>)
+   1. [git hub page 배포 링크](#git-hub-page-배포-링크)
 2. [API Test 참고 및 사전과제 가이드](#API-Test-참고-및-사전과제-가이드)
    1. [요건 사항](#요건-사항)
 3. [설치 패키지 및 개발 환경](#설치-패키지-및-개발-환경)
@@ -35,9 +35,10 @@
    2. `npm install`
    3. `yarn start`
 
-### git hub page 배포 링크 (API TEST 서버는 따로 실행 필요)
+### git hub page 배포 링크
 
-https://clean-teach.github.io/wanted-pre-onboarding-challenge-fe-1/
+- (API TEST 서버는 따로 실행 필요)
+- https://clean-teach.github.io/wanted-pre-onboarding-challenge-fe-1/
 
 <br/>
 
