@@ -24,7 +24,7 @@
 
 ---
 
-## 1. Demo 실행 방법
+## 1. demo 실행 방법
 
 1. API Test Server 실행
 
