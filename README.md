@@ -12,13 +12,13 @@
 ## 개요
 
 1. [Demo 실행 방법](#demo-실행-방법)
-   1. [git hub page 배포 링크 (API TEST 서버는 따로 실행 필요)](<#3.-git-hub-page-배포-링크-(API-TEST-서버는-따로-실행-필요)>)
-2. [API Test 참고 및 사전과제 가이드](#2.-API-Test-참고-및-사전과제-가이드)
-   1. [요건 사항](#2-1.-요건-사항)
-3. [설치 패키지 및 개발 환경](#3.-설치-패키지-및-개발-환경)
-4. [프로젝트 트리 구조](#4.-프로젝트-트리-구조)
-5. [과제 진행 시 주안점](#5.-과제-진행-시-주안점)
-6. [한계점 및 개선 사항](#6.-한계점-및-개선-사항)
+   1. [git hub page 배포 링크 (API TEST 서버는 따로 실행 필요)](<#git-hub-page-배포-링크-(API-TEST-서버는-따로-실행-필요)>)
+2. [API Test 참고 및 사전과제 가이드](#API-Test-참고-및-사전과제-가이드)
+   1. [요건 사항](#요건-사항)
+3. [설치 패키지 및 개발 환경](#설치-패키지-및-개발-환경)
+4. [프로젝트 트리 구조](#프로젝트-트리-구조)
+5. [과제 진행 시 주안점](#과제-진행-시-주안점)
+6. [한계점 및 개선 사항](#한계점-및-개선-사항)
 
 <br/>
 
@@ -35,7 +35,7 @@
    2. `npm install`
    3. `yarn start`
 
-### 1-1. git hub page 배포 링크 (API TEST 서버는 따로 실행 필요)
+### git hub page 배포 링크 (API TEST 서버는 따로 실행 필요)
 
 https://clean-teach.github.io/wanted-pre-onboarding-challenge-fe-1/
 
@@ -43,11 +43,11 @@ https://clean-teach.github.io/wanted-pre-onboarding-challenge-fe-1/
 
 ---
 
-## 2. API Test 참고 및 사전과제 가이드
+## API Test 참고 및 사전과제 가이드
 
 https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api
 
-### 2-1. 요건 사항
+### 요건 사항
 
 - [x] /auth 경로에 로그인 / 회원가입 기능을 개발
   - [x] 최소한 이메일, 비밀번호 input, 제출 button을 갖도록 구성
@@ -75,7 +75,7 @@ https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api
 
 ---
 
-## 3. 설치 패키지 및 개발 환경
+## 설치 패키지 및 개발 환경
 
 - `create-react-app` : 미리 셋팅된 리액트 환경을 이용하기 위해서 선택
 - `typescript` : 안전한 코딩을 하기 위하여 사용
@@ -92,7 +92,7 @@ https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api
 
 ---
 
-## 4. 프로젝트 트리 구조
+## 프로젝트 트리 구조
 
 - presentational & container 디자인 패턴 으로 폴더를 정리 하였습니다.
 
@@ -163,7 +163,7 @@ https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api
 
 ---
 
-## 5. 과제 진행 시 주안점
+## 과제 진행 시 주안점
 
 - 실무에서 필요한 업무 능력이 무엇인지 배우고 이를 실습해보는 과정에서 깊게 이해하고 싶었습니다.
 
@@ -171,6 +171,6 @@ https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api
 
 ---
 
-## 6. 한계점 및 개선 사항
+## 한계점 및 개선 사항
 
 - react-query 를 셋팅까지 다 해놓고, 착오로 사용 하지 않았기 때문에 추 후 적용이 필요 합니다.
