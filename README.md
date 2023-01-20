@@ -7,11 +7,47 @@
 
 ## 개요 추가
 
-1. [API Test 참고 및 사전과제 가이드][section01]
+1. [API Test 참고 및 사전과제 가이드](##API-Test-참고-및-사전과제-가이드)
+2. [Demo 실행 방법](##Demo-실행-방법)
 
-[section01]: ## API Test 참고 및 사전과제 가이드
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+- a
+
+## API Test 참고 및 사전과제 가이드
 
 https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api
+
+#section02
 
 ## Demo 실행 방법
 
