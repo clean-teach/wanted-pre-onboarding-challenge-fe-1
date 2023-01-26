@@ -129,5 +129,22 @@ export const AuthArea = styled.div`
       font-size: 1rem;
       padding: 1rem;
     }
+    .input-area {
+      position: relative;
+      padding-top: 0.5rem;
+    }
+    label {
+      position: absolute;
+      top: 0;
+      left: 1rem;
+      background-color: #ffffff;
+      padding: 0 0.5rem;
+      display: none;
+    }
+    input:focus {
+      & + label {
+        display: block;
+      }
+    }
   }
 `;

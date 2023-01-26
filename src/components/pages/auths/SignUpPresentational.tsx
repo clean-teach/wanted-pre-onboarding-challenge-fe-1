@@ -43,40 +43,48 @@ function SignUpPresentational({
     <AuthArea>
       <h2>회원가입</h2>
       <form onSubmit={handleSubmit(handleSignUp)}>
-        <input
-          {...register('email', {
-            required: '이메일에 @ 와 . 이 포함되어야 합니다.',
-            pattern: regExpEmail,
-          })}
-          type="email"
-          placeholder="이메일을 입력해주세요"
-          className={setClassNameByValid({
-            isDefault,
-            successCondition: successEmail,
-            warningCondition:
-              watch().email?.length !== 0 || fetchError.status !== null,
-          })}
-        />
-        {errors.email?.type === 'pattern' && (
-          <p className="warning">{errors.email.message}</p>
-        )}
-        <input
-          {...register('password', {
-            required: '비밀번호는 최소 8자 이상을 입력하여야 합니다.',
-            minLength: 8,
-          })}
-          type="password"
-          placeholder="비밀번호는 8자 이상을 입력해주세요"
-          className={setClassNameByValid({
-            isDefault,
-            successCondition: successPassword,
-            warningCondition:
-              watch().password?.length !== 0 || fetchError.status !== null,
-          })}
-        />
-        {errors.password?.type === 'minLength' && (
-          <p className="warning">{errors.password?.message}</p>
-        )}
+        <div className="input-area">
+          <input
+            id="userEmail"
+            {...register('email', {
+              required: '이메일에 @ 와 . 이 포함되어야 합니다.',
+              pattern: regExpEmail,
+            })}
+            type="email"
+            placeholder="이메일을 입력해주세요"
+            className={setClassNameByValid({
+              isDefault,
+              successCondition: successEmail,
+              warningCondition:
+                watch().email?.length !== 0 || fetchError.status !== null,
+            })}
+          />
+          <label htmlFor="userEmail">E-mail</label>
+          {errors.email?.type === 'pattern' && (
+            <p className="warning">{errors.email.message}</p>
+          )}
+        </div>
+        <div className="input-area">
+          <input
+            id="userPassword"
+            {...register('password', {
+              required: '비밀번호는 최소 8자 이상을 입력하여야 합니다.',
+              minLength: 8,
+            })}
+            type="password"
+            placeholder="비밀번호는 8자 이상을 입력해주세요"
+            className={setClassNameByValid({
+              isDefault,
+              successCondition: successPassword,
+              warningCondition:
+                watch().password?.length !== 0 || fetchError.status !== null,
+            })}
+          />
+          <label htmlFor="userPassword">Password</label>
+          {errors.password?.type === 'minLength' && (
+            <p className="warning">{errors.password?.message}</p>
+          )}
+        </div>
         <input
           {...register('passwordConfirm', {
             required:
