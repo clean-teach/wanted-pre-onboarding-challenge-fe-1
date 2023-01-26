@@ -7,6 +7,7 @@ import { LOCALSTORAGE_LOGINTOKEN } from '../../../utils/strings';
 import { ISignInForm } from '../../../types/authComponentTypes';
 import LoginPresentational from './LoginPresentational';
 import { useMutation } from 'react-query';
+import { AxiosError } from 'axios';
 
 function LoginContainer() {
   const [fetchError, setFetchError] = useRecoilState(errorState);
@@ -20,55 +21,35 @@ function LoginContainer() {
     formState: { errors },
   } = useForm<ISignInForm>();
 
-  // const { data, isLoading, mutate, mutateAsync } = useMutation(fetchLogIn);
+  // const mutation = useMutation(fetchLogIn);
+  // console.log(mutation);
+  const mutation = useMutation(fetchLogIn);
 
   const handleSignIn = (data: ISignInForm) => {
-    // mutate(
-    //   {
-    //     email: data.email,
-    //     password: data.password,
-    //   },
-    //   {
-    //     onSuccess: (data, variables, context) => {
-    //       // window.localStorage.setItem(LOCALSTORAGE_LOGINTOKEN, data.data.token);
-    //       // setIsLoggedIn(true);
-    //     },
-    //     onError: (error, variables, context) => {
-    //       if (error) {
-    //         console.log(error);
-    //         // const status = error.response.status;
-    //         // setFetchError({
-    //         //   status: error.response.status,
-    //         //   message: error.message,
-    //         // });
-    //       }
-    //     },
-    //   },
-    // );
-
-    const response = fetchLogIn({
-      email: data.email,
-      password: data.password,
-    });
-    response
-      .then((response) => {
-        window.localStorage.setItem(
-          LOCALSTORAGE_LOGINTOKEN,
-          response.data.token,
-        );
-        setIsLoggedIn(true);
-        setFetchError({
-          status: null,
-          message: '',
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        setFetchError({
-          status: error.response.status,
-          message: error.response.data.details,
-        });
-      });
+    mutation.mutate(
+      {
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onSuccess: (data) => {
+          const token = data.data.token;
+          window.localStorage.setItem(LOCALSTORAGE_LOGINTOKEN, token);
+          setIsLoggedIn(true);
+          setFetchError({
+            status: null,
+            message: '',
+          });
+        },
+        onError: (error: any) => {
+          console.log('error', error);
+          setFetchError({
+            status: error.response.status,
+            message: error.response.data.details,
+          });
+        },
+      },
+    );
     setIsDefault(false);
   };
 
@@ -81,6 +62,7 @@ function LoginContainer() {
       isDefault={isDefault}
       fetchError={fetchError}
       errors={errors}
+      mutation={mutation}
     />
   );
 }
