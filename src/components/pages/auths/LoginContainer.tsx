@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { fetchLogIn } from '../../../api/api';
 import { useRecoilState, useSetRecoilState } from 'recoil';
@@ -7,7 +7,6 @@ import { LOCALSTORAGE_LOGINTOKEN } from '../../../utils/strings';
 import { ISignInForm } from '../../../types/authComponentTypes';
 import LoginPresentational from './LoginPresentational';
 import { useMutation } from 'react-query';
-import { AxiosError } from 'axios';
 
 function LoginContainer() {
   const [fetchError, setFetchError] = useRecoilState(errorState);
@@ -21,8 +20,6 @@ function LoginContainer() {
     formState: { errors },
   } = useForm<ISignInForm>();
 
-  // const mutation = useMutation(fetchLogIn);
-  // console.log(mutation);
   const mutation = useMutation(fetchLogIn);
 
   const handleSignIn = (data: ISignInForm) => {
@@ -52,6 +49,15 @@ function LoginContainer() {
     );
     setIsDefault(false);
   };
+
+  useEffect(() => {
+    return () => {
+      setFetchError({
+        status: null,
+        message: '',
+      });
+    };
+  }, []);
 
   return (
     <LoginPresentational

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { fetchSignUp } from '../../../api/api';
 import { useRecoilState } from 'recoil';
@@ -6,6 +6,7 @@ import { errorState } from '../../../atoms/atoms';
 import { useNavigate } from 'react-router-dom';
 import { ISignUpForm } from '../../../types/authComponentTypes';
 import SignUpPresentational from './SignUpPresentational';
+import { useMutation } from 'react-query';
 
 function SignUpContainer() {
   const [isDefault, setIsDefault] = useState(true);
@@ -19,32 +20,45 @@ function SignUpContainer() {
     formState: { errors },
   } = useForm<ISignUpForm>();
 
-  const handleSignUp = (data: ISignUpForm) => {
-    const response = fetchSignUp({
-      email: data.email,
-      password: data.password,
-    });
+  const mutation = useMutation(fetchSignUp);
 
-    response
-      .then((response) => {
-        if (response.status === 200) {
+  const handleSignUp = (data: ISignUpForm) => {
+    mutation.mutate(
+      {
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onSuccess(data) {
+          if (data.status === 200) {
+            setFetchError({
+              status: null,
+              message: '',
+            });
+            alert('회원가입이 완료되었습니다.');
+            navigate('../login');
+          }
+        },
+        onError: (error: any) => {
+          console.log('error', error);
           setFetchError({
-            status: null,
-            message: '',
+            status: error.response.status,
+            message: error.response.data.details,
           });
-          alert('회원가입이 완료되었습니다.');
-          navigate('../login');
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setFetchError({
-          status: error.response.status,
-          message: error.response.data.details,
-        });
-      });
+        },
+      },
+    );
     setIsDefault(false);
   };
+
+  useEffect(() => {
+    return () => {
+      setFetchError({
+        status: null,
+        message: '',
+      });
+    };
+  }, []);
 
   return (
     <SignUpPresentational
