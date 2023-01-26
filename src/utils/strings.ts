@@ -1,1 +1,1 @@
-export const LOCALSTORAGE_LOGINTOKEN = 'loginToken';
+export const LOCALSTORAGE_LOGINTOKEN = 'wantedPreOnboardingChallengeLoginToken';
