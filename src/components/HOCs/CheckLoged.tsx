@@ -4,8 +4,9 @@ import { OutletProps, useNavigate } from 'react-router-dom';
 import { isLoggedInState } from '../../atoms/atoms';
 import { LOCALSTORAGE_LOGINTOKEN } from '../../utils/strings';
 
-function CheckLoged({ child }: any): React.ReactElement {
-  console.log(child);
+function CheckLoged({ children }: any) {
+  // function CheckLoged() {
+  console.log(children);
   // const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
   // const navigate = useNavigate();
 
@@ -18,7 +19,7 @@ function CheckLoged({ child }: any): React.ReactElement {
   //   isLoggedIn ? navigate('/todos') : navigate('/auth/login');
   // }, [isLoggedIn]);
 
-  return child;
+  return <div>Component test{children}</div>;
 }
 
 export default CheckLoged;
