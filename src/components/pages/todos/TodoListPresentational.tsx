@@ -64,7 +64,7 @@ const ListArea = styled.div`
 
 interface IProps {
   token: string;
-  error: string;
+  error: string | null;
   todos: ITodo[];
 }
 
@@ -79,23 +79,20 @@ function TodoListPresentational({ token, error, todos }: IProps) {
         <ScrollArea>
           <ListArea>
             <h2>할 일 목록</h2>
-            {error === '' ? (
-              <ul>
-                {todos.map((todo) => {
-                  return (
-                    <TodoItemContainer
-                      key={todo.id}
-                      token={token}
-                      todoId={todo.id}
-                      todoTitle={todo.title}
-                      todoCurrent={todo.current}
-                    />
-                  );
-                })}
-              </ul>
-            ) : (
-              <p>{error}</p>
-            )}
+            <ul>
+              {todos.map((todo) => {
+                return (
+                  <TodoItemContainer
+                    key={todo.id}
+                    token={token}
+                    todoId={todo.id}
+                    todoTitle={todo.title}
+                    todoCurrent={todo.current}
+                  />
+                );
+              })}
+            </ul>
+            {error === '' ? <p>에러 아님</p> : <p>{error}</p>}
           </ListArea>
         </ScrollArea>
       </TodoArea>

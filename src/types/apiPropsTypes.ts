@@ -8,7 +8,7 @@ export interface IPropsPostTodos {
   token: string;
 }
 export interface IPropsGetTodos {
-  token: string;
+  token: string | null;
 }
 export interface IPropsTodo {
   todoId: string;

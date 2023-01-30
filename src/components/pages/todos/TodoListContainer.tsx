@@ -1,36 +1,34 @@
-import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useQuery } from 'react-query';
 import { fetchGetTodos } from '../../../api/api';
-import { TodosState } from '../../../atoms/atoms';
 import { LOCALSTORAGE_LOGINTOKEN } from '../../../utils/strings';
 import TodoListPresentational from './TodoListPresentational';
 
 function TodoListContainer() {
   const token = window.localStorage.getItem(LOCALSTORAGE_LOGINTOKEN);
-  const [todos, setTodos] = useRecoilState(TodosState);
-  const [error, setError] = useState('');
+  const mutation = useQuery('getTodos', () => fetchGetTodos({ token }), {
+    retry: true,
+    keepPreviousData: true,
+  });
 
-  useEffect(() => {
-    if (token) {
-      const response = fetchGetTodos({ token });
-      response
-        .then((response) => {
-          const responseTodos = response.data.data;
-          setTodos(responseTodos.reverse());
-          setError('');
-        })
-        .catch((error) => {
-          console.log(error);
-          setError(error.message);
-        });
-    }
-  }, [todos]);
+  console.log(mutation);
 
   if (!token) {
     return <p>로그인이 필요합니다.</p>;
   }
 
-  return <TodoListPresentational token={token} error={error} todos={todos} />;
+  return mutation.isLoading ? (
+    <p>로딩중 입니다.</p>
+  ) : mutation.isError ? (
+    <p>에러</p>
+  ) : mutation.isSuccess ? (
+    <TodoListPresentational
+      token={token}
+      error={mutation.error}
+      todos={mutation.data.data.data.reverse()}
+    />
+  ) : (
+    <p>실패</p>
+  );
 }
 
 export default TodoListContainer;
