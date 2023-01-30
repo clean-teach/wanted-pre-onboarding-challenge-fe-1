@@ -5,26 +5,26 @@ import TodoListPresentational from './TodoListPresentational';
 
 function TodoListContainer() {
   const token = window.localStorage.getItem(LOCALSTORAGE_LOGINTOKEN);
-  const mutation = useQuery('getTodos', () => fetchGetTodos({ token }), {
+  const queryResult = useQuery('getTodos', () => fetchGetTodos({ token }), {
     retry: true,
     keepPreviousData: true,
   });
 
-  console.log(mutation);
+  console.log(queryResult);
 
   if (!token) {
     return <p>로그인이 필요합니다.</p>;
   }
 
-  return mutation.isLoading ? (
+  return queryResult.isLoading ? (
     <p>로딩중 입니다.</p>
-  ) : mutation.isError ? (
+  ) : queryResult.isError ? (
     <p>에러</p>
-  ) : mutation.isSuccess ? (
+  ) : queryResult.isSuccess ? (
     <TodoListPresentational
       token={token}
-      error={mutation.error}
-      todos={mutation.data.data.data.reverse()}
+      error={queryResult.error}
+      todos={queryResult.data.data.data.reverse()}
     />
   ) : (
     <p>실패</p>
