@@ -44,7 +44,7 @@ interface IProps {
   todo: ITodo;
   isEdit: boolean;
   handleEditTodo: (data: IViewTodoForm) => void;
-  onEditModeChange: () => void;
+  onEditModeStart: () => void;
   onEditModeEnd: () => void;
   handleSubmit: UseFormHandleSubmit<IViewTodoForm>;
   register: UseFormRegister<IViewTodoForm>;
@@ -55,7 +55,7 @@ function TodoViewPresentational({
   isEdit,
   handleEditTodo,
   onEditModeEnd,
-  onEditModeChange,
+  onEditModeStart,
   handleSubmit,
   register,
 }: IProps) {
@@ -108,7 +108,7 @@ function TodoViewPresentational({
               <dt>수정 날짜</dt>
               <dd>{getDateStringKorean(todo.updatedAt)}</dd>
             </dl>
-            <button onClick={onEditModeChange}>할 일 수정</button>
+            <button onClick={onEditModeStart}>할 일 수정</button>
           </>
         ))}
     </Wrapper>

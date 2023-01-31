@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { fetchGetTodoById, fetchUpdateTodo } from '../../api/api';
 import { ITodo } from '../../types/atomsTypes';
@@ -11,7 +12,7 @@ interface IProps {
 }
 
 function TodoViewContainer({ token }: IProps) {
-  const params = useParams();
+  const { todoId } = useParams();
   const [todo, setTodo] = useState<ITodo>();
   const [isEdit, setIsEdit] = useState(false);
 
@@ -22,12 +23,19 @@ function TodoViewContainer({ token }: IProps) {
     },
   });
 
-  const onEditModeChange = () => {
-    if (todo) {
-      setIsEdit((current) => !current);
-      setValue('todoTitle', todo.title);
-      setValue('todoContent', todo.content);
-    }
+  const queryClient = useQueryClient();
+  const getTodoByIdQueryResult = useQuery(
+    ['getTodos', todoId],
+    () => fetchGetTodoById({ todoId, token }),
+    {
+      enabled: !!todoId, // 코드 자동 실행 설정
+    },
+  );
+
+  const onEditModeStart = () => {
+    setIsEdit((current) => !current);
+    setValue('todoTitle', getTodoByIdQueryResult.data?.data.data.title);
+    setValue('todoContent', getTodoByIdQueryResult.data?.data.data.content);
   };
   const onEditModeEnd = () => {
     if (isEdit === true) {
@@ -35,54 +43,49 @@ function TodoViewContainer({ token }: IProps) {
     }
   };
   const handleEditTodo = (data: IViewTodoForm) => {
-    if (params.todoId) {
-      const response = fetchUpdateTodo({
-        todoId: params.todoId,
-        token,
-        title: data.todoTitle,
-        content: data.todoContent,
-      });
-      response
-        .then((response) => {
-          setTodo(response.data.data);
-          setIsEdit((current) => !current);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+    // if (params.todoId) {
+    //   const response = fetchUpdateTodo({
+    //     todoId: params.todoId,
+    //     token,
+    //     title: data.todoTitle,
+    //     content: data.todoContent,
+    //   });
+    //   response
+    //     .then((response) => {
+    //       setTodo(response.data.data);
+    //       setIsEdit((current) => !current);
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // }
   };
 
   useEffect(() => {
     onEditModeEnd();
-    if (params.todoId) {
-      const response = fetchGetTodoById({ todoId: params.todoId, token });
-      response
-        .then((response) => {
-          setTodo(response.data.data);
-        })
-        .catch((error) => console.log(error));
-    }
-  }, [params]);
+    // if (getTodoByIdQueryResult.isSuccess) {
+    //   console.log(getTodoByIdQueryResult);
+    // }
+  }, [todoId]);
 
-  if (!todo) {
-    return (
-      <p className="guide">
-        현재 선택 된 To do 가 없습니다. To do 를 클릭해 주세요.
-      </p>
-    );
-  }
-
-  return (
+  return getTodoByIdQueryResult.isLoading ? (
+    <p>로딩 중...</p>
+  ) : getTodoByIdQueryResult.isError ? (
+    <p>에러</p>
+  ) : getTodoByIdQueryResult.isSuccess ? (
     <TodoViewPresentational
-      todo={todo}
+      todo={getTodoByIdQueryResult.data.data.data}
       isEdit={isEdit}
       handleEditTodo={handleEditTodo}
-      onEditModeChange={onEditModeChange}
+      onEditModeStart={onEditModeStart}
       onEditModeEnd={onEditModeEnd}
       handleSubmit={handleSubmit}
       register={register}
     />
+  ) : (
+    <p className="guide">
+      현재 선택 된 To do 가 없습니다. To do 를 클릭해 주세요.
+    </p>
   );
 }
 

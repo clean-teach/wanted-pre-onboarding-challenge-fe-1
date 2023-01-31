@@ -11,7 +11,7 @@ export interface IPropsGetTodos {
   token: string | null;
 }
 export interface IPropsTodo {
-  todoId: string;
+  todoId: string | undefined;
   token: string;
 }
 export interface IPropsUpdateTodo {
