@@ -7,7 +7,6 @@ import {
 import styled from 'styled-components';
 import { ICreateTodoForm } from '../../types/todoComponentTypes';
 import { getValidCreateTodoFrom } from '../../hooks/todo/createTodo';
-import { IErrorState } from '../../types/atomsTypes';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -32,7 +31,6 @@ const Wrapper = styled.div`
 
 interface IProps {
   handleCreateTodo: (data: ICreateTodoForm) => void;
-  fetchError: IErrorState;
   register: UseFormRegister<ICreateTodoForm>;
   watch: UseFormWatch<ICreateTodoForm>;
   handleSubmit: UseFormHandleSubmit<ICreateTodoForm>;
@@ -46,7 +44,6 @@ interface IProps {
 
 function CreateTodoPresentational({
   handleCreateTodo,
-  fetchError,
   register,
   watch,
   handleSubmit,
@@ -86,11 +83,11 @@ function CreateTodoPresentational({
           <p className="warning">할 일은 100자 이내로 작성해 주세요</p>
         )}
         <button disabled={successNewTodo ? false : true}>할 일 생성</button>
-        {fetchError.status !== null ? (
+        {/* {fetchError.status !== null ? (
           <p className="warning">
             {fetchError.status} : {fetchError.message}
           </p>
-        ) : null}
+        ) : null} */}
       </form>
     </Wrapper>
   );

@@ -1,18 +1,15 @@
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { useRecoilState } from 'recoil';
-import { errorState, TodosState } from '../../atoms/atoms';
 import { fetchCreateTodo } from '../../api/api';
-import { ITodo, TodoCurrent } from '../../types/atomsTypes';
 import { ICreateTodoForm } from '../../types/todoComponentTypes';
 import CreateTodoPresentational from './CreateTodoPresentational';
+import { useMutation, useQueryClient } from 'react-query';
 
 interface IProps {
   token: string;
 }
 
 function CreateTodoContainer({ token }: IProps) {
-  const [todos, setTodos] = useRecoilState(TodosState);
-  const [fetchError, setFetchError] = useRecoilState(errorState);
   const {
     register,
     watch,
@@ -20,46 +17,36 @@ function CreateTodoContainer({ token }: IProps) {
     formState: { errors },
     setValue,
   } = useForm<ICreateTodoForm>();
+  const queryClient = useQueryClient();
+  const mutation = useMutation(fetchCreateTodo);
 
-  const handleCreateTodo = (data: ICreateTodoForm) => {
-    const response = fetchCreateTodo({
-      title: data.newTodoTitle,
-      content: data.newTodoContent,
-      token: token,
-    });
-    response
-      .then((response) => {
-        const { title, content, id, createdAt, updatedAt }: ITodo =
-          response.data.data;
-        const newTodo: ITodo = {
-          title,
-          content,
-          id,
-          current: TodoCurrent.TO_DO,
-          createdAt,
-          updatedAt,
-        };
-        setTodos([newTodo, ...todos]);
-        setFetchError({
-          status: null,
-          message: '',
-        });
-        setValue('newTodoTitle', '');
-        setValue('newTodoContent', '');
-      })
-      .catch((error) => {
-        console.log(error);
-        setFetchError({
-          status: error.response.status,
-          message: error.response.data.details,
-        });
-      });
-  };
+  const handleCreateTodo = useCallback(
+    async (input: ICreateTodoForm) => {
+      await mutation.mutate(
+        {
+          title: input.newTodoTitle,
+          content: input.newTodoContent,
+          token: token,
+        },
+        {
+          onSuccess(resultDate) {
+            console.log(resultDate);
+            queryClient.invalidateQueries('getTodos');
+            setValue('newTodoTitle', '');
+            setValue('newTodoContent', '');
+          },
+          onError(error) {
+            console.log(error);
+          },
+        },
+      );
+    },
+    [mutation],
+  );
 
   return (
     <CreateTodoPresentational
       handleCreateTodo={handleCreateTodo}
-      fetchError={fetchError}
       register={register}
       watch={watch}
       handleSubmit={handleSubmit}
