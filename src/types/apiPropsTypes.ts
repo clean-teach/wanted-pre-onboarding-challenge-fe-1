@@ -5,18 +5,18 @@ export interface IPropsAuths {
 export interface IPropsPostTodos {
   title: string;
   content: string;
-  token: string;
+  token: string | null;
 }
 export interface IPropsGetTodos {
   token: string | null;
 }
 export interface IPropsTodo {
   todoId: string | undefined;
-  token: string;
+  token: string | null;
 }
 export interface IPropsUpdateTodo {
-  todoId: string;
-  token: string;
+  todoId: string | undefined;
+  token: string | null;
   title: string;
   content: string;
 }

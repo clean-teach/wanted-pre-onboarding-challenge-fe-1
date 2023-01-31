@@ -1,8 +1,8 @@
 import { atom } from 'recoil';
-import { IErrorState, ITodo } from '../types/atomsTypes';
+import { IErrorState } from '../types/atomsTypes';
 
 export const isLoggedInState = atom({
-  key: 'isLoggedIn',
+  key: 'isLogged',
   default: false,
 });
 
@@ -12,9 +12,4 @@ export const errorState = atom<IErrorState>({
     status: null,
     message: '',
   },
-});
-
-export const TodosState = atom<ITodo[]>({
-  key: 'todos',
-  default: [],
 });

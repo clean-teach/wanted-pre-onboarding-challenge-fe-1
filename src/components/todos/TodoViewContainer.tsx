@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { fetchGetTodoById, fetchUpdateTodo } from '../../api/api';
-import { ITodo } from '../../types/atomsTypes';
 import { IViewTodoForm } from '../../types/todoComponentTypes';
 import TodoViewPresentational from './TodoViewPresentational';
 
@@ -13,15 +12,7 @@ interface IProps {
 
 function TodoViewContainer({ token }: IProps) {
   const { todoId } = useParams();
-  const [todo, setTodo] = useState<ITodo>();
   const [isEdit, setIsEdit] = useState(false);
-
-  const { register, handleSubmit, setValue } = useForm<IViewTodoForm>({
-    defaultValues: {
-      todoTitle: todo?.title,
-      todoContent: todo?.content,
-    },
-  });
 
   const queryClient = useQueryClient();
   const getTodoByIdQueryResult = useQuery(
@@ -31,6 +22,14 @@ function TodoViewContainer({ token }: IProps) {
       enabled: !!todoId, // 코드 자동 실행 설정
     },
   );
+  const updateTodoMutation = useMutation(fetchUpdateTodo);
+
+  const { register, handleSubmit, setValue } = useForm<IViewTodoForm>({
+    defaultValues: {
+      todoTitle: getTodoByIdQueryResult.data?.data.data.title,
+      todoContent: getTodoByIdQueryResult.data?.data.data.content,
+    },
+  });
 
   const onEditModeStart = () => {
     setIsEdit((current) => !current);
@@ -42,23 +41,24 @@ function TodoViewContainer({ token }: IProps) {
       setIsEdit((current) => !current);
     }
   };
-  const handleEditTodo = (data: IViewTodoForm) => {
-    // if (params.todoId) {
-    //   const response = fetchUpdateTodo({
-    //     todoId: params.todoId,
-    //     token,
-    //     title: data.todoTitle,
-    //     content: data.todoContent,
-    //   });
-    //   response
-    //     .then((response) => {
-    //       setTodo(response.data.data);
-    //       setIsEdit((current) => !current);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // }
+  const handleEditTodo = (inputData: IViewTodoForm) => {
+    updateTodoMutation.mutate(
+      {
+        todoId,
+        token,
+        title: inputData.todoTitle,
+        content: inputData.todoContent,
+      },
+      {
+        onSuccess(resultDate) {
+          queryClient.invalidateQueries('getTodos');
+          onEditModeEnd();
+        },
+        onError(error) {
+          console.log(error);
+        },
+      },
+    );
   };
 
   useEffect(() => {
