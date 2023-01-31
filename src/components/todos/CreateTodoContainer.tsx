@@ -29,8 +29,8 @@ function CreateTodoContainer({ token }: IProps) {
           token: token,
         },
         {
-          onSuccess(resultDate) {
-            console.log(resultDate);
+          onSuccess(response) {
+            console.log(response);
             queryClient.invalidateQueries('getTodos');
             setValue('newTodoTitle', '');
             setValue('newTodoContent', '');

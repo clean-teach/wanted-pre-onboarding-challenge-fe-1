@@ -18,13 +18,13 @@ function TodoItemContainer({ token, todoId, todoTitle, todoCurrent }: IProps) {
   const mutation = useMutation(fetchDeleteTodos);
 
   const onRemove = () => {
-    const result = confirm('정말 삭제 하시겠습니까?');
-    if (result) {
+    const isRemoveConfirmed = confirm('정말 삭제 하시겠습니까?');
+    if (isRemoveConfirmed) {
       mutation.mutate(
         { todoId, token },
         {
-          onSuccess(resultDate) {
-            console.log(resultDate);
+          onSuccess(response) {
+            console.log(response);
             queryClient.invalidateQueries('getTodos');
           },
           onError(error) {

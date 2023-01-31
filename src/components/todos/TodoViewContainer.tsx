@@ -50,7 +50,7 @@ function TodoViewContainer({ token }: IProps) {
         content: inputData.todoContent,
       },
       {
-        onSuccess(resultDate) {
+        onSuccess(response) {
           queryClient.invalidateQueries('getTodos');
           onEditModeEnd();
         },

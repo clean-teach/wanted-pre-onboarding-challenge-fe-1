@@ -22,15 +22,15 @@ function LoginContainer() {
 
   const mutation = useMutation(fetchLogIn);
 
-  const handleSignIn = (data: ISignInForm) => {
+  const handleSignIn = (inputData: ISignInForm) => {
     mutation.mutate(
       {
-        email: data.email,
-        password: data.password,
+        email: inputData.email,
+        password: inputData.password,
       },
       {
-        onSuccess: (data) => {
-          const token = data.data.token;
+        onSuccess: (response) => {
+          const token = response.data.token;
           window.localStorage.setItem(LOCALSTORAGE_LOGINTOKEN, token);
           setIsLoggedIn(true);
           setFetchError({

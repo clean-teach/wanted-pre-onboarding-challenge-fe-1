@@ -22,15 +22,15 @@ function SignUpContainer() {
 
   const mutation = useMutation(fetchSignUp);
 
-  const handleSignUp = (data: ISignUpForm) => {
+  const handleSignUp = (inputData: ISignUpForm) => {
     mutation.mutate(
       {
-        email: data.email,
-        password: data.password,
+        email: inputData.email,
+        password: inputData.password,
       },
       {
-        onSuccess(data) {
-          if (data.status === 200) {
+        onSuccess(response) {
+          if (response.status === 200) {
             setFetchError({
               status: null,
               message: '',
